@@ -287,10 +287,14 @@ public class studentGUI extends JFrame {
     JButton btnSearch = new JButton("Tìm kiếm");
     btnSearch.setBounds(1252, 12, 90, 38);
     panel1.add(btnSearch);
+    
+    
     tfFind = new JTextField();
     tfFind.setBounds(1010, 12, 243, 38);
     panel1.add(tfFind);
     tfFind.setColumns(10);
+    
+    
     JButton btnTrLi = new JButton("");
     btnTrLi.setBounds(0, 0, 50, 50);
     panel1.add(btnTrLi);

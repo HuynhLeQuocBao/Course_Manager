@@ -483,7 +483,6 @@ public class productGUI extends JFrame {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để xóa");
 		}
 	}
-
 	private void displayList() {
 		model.setRowCount(0);
 		productList = proBBL.getAllProduct();
