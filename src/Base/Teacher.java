@@ -1,24 +1,22 @@
 package Base;
 
-import java.util.Date;
-
 public class Teacher extends Person {
-  private Date enrollmentDate;
+  private String enrollmentDate;
 
   public Teacher() {
 
   }
 
-  public Teacher(int personID, String lastName, String firstName, Date enrollmentDate) {
+  public Teacher(int personID, String lastName, String firstName, String enrollmentDate) {
     super(personID, lastName, firstName);
     this.enrollmentDate = enrollmentDate;
   }
 
-  public Date getEnrollmentDate() {
+  public String getEnrollmentDate() {
     return enrollmentDate;
   }
 
-  public void setEnrollmentDate(Date enrollmentDate) {
+  public void setEnrollmentDate(String enrollmentDate) {
     this.enrollmentDate = enrollmentDate;
   }
 

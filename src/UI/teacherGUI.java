@@ -19,29 +19,25 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import BLL.StudentBLL;
+import BLL.TeacherBLL;
 import java.awt.Panel;
 import Base.*;
 
-public class studentGUI extends JFrame {
+public class teacherGUI extends JFrame {
 
-  List<Student> studentList = new ArrayList<Student>();
-  StudentBLL stuBBL = new StudentBLL();
+  List<Teacher> teacherList = new ArrayList<Teacher>();
+  TeacherBLL teaBLL = new TeacherBLL();
   public JFrame f = new JFrame();
   private JPanel contentPane;
   private JTextField tfLastName;
   private JTextField tfFirstName;
-  private JTextField tfHireDate;
+  private JTextField tfEnrollmentDate;
   private JTextField tfFind;
   DefaultTableModel model = new DefaultTableModel();
   private JTable table;
   private JTextField tfCode;
 
-  public static void main(String[] args) {
-    new studentGUI();
-  }
-
-  public studentGUI() {
+  public teacherGUI() {
     initComponent();
     displayList();
   }
@@ -52,7 +48,7 @@ public class studentGUI extends JFrame {
    * @return
    */
   public void initComponent() {
-    setTitle("Quản lý sinh viên");
+    setTitle("Quản lý Giáo Viên");
     setSize(1366, 740);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     contentPane = new JPanel();
@@ -90,16 +86,16 @@ public class studentGUI extends JFrame {
     panel.add(tfFirstName);
     tfFirstName.setColumns(10);
 
-    JLabel lbHireDate = new JLabel("HireDate");
-    lbHireDate.setFont(new Font("SansSerif", Font.BOLD, 12));
-    lbHireDate.setForeground(new Color(0, 0, 0));
-    lbHireDate.setBounds(25, 314, 55, 28);
-    panel.add(lbHireDate);
+    JLabel lbEnrollmentDate = new JLabel("EnrollmentDate");
+    lbEnrollmentDate.setFont(new Font("SansSerif", Font.BOLD, 12));
+    lbEnrollmentDate.setForeground(new Color(0, 0, 0));
+    lbEnrollmentDate.setBounds(25, 314, 55, 28);
+    panel.add(lbEnrollmentDate);
 
-    tfHireDate = new JTextField();
-    tfHireDate.setBounds(126, 314, 186, 28);
-    panel.add(tfHireDate);
-    tfHireDate.setColumns(10);
+    tfEnrollmentDate = new JTextField();
+    tfEnrollmentDate.setBounds(126, 314, 186, 28);
+    panel.add(tfEnrollmentDate);
+    tfEnrollmentDate.setColumns(10);
 
     JButton btnEdit = new JButton("Sửa");
     btnEdit.addActionListener(new ActionListener() {
@@ -153,7 +149,7 @@ public class studentGUI extends JFrame {
     model.addColumn("PersonID");
     model.addColumn("Lastname");
     model.addColumn("Firstname");
-    model.addColumn("HireDate");
+    model.addColumn("EnrollmentDate");
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -168,7 +164,7 @@ public class studentGUI extends JFrame {
     contentPane.add(panel1);
     panel1.setLayout(null);
 
-    JLabel lbTitle = new JLabel("Danh Sách Sinh Viên");
+    JLabel lbTitle = new JLabel("Danh Sách Giáo Viên");
     lbTitle.setForeground(Color.WHITE);
     lbTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
     lbTitle.setBounds(315, 6, 387, 36);
@@ -182,13 +178,13 @@ public class studentGUI extends JFrame {
     panel1.add(tfFind);
     tfFind.setColumns(10);
 
-    JLabel lblNewLabel = new JLabel("Tìm kiếm theo tên sinh viên");
+    JLabel lblNewLabel = new JLabel("Tìm kiếm theo tên giáo viên");
     lblNewLabel.setForeground(Color.WHITE);
     lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
     lblNewLabel.setBounds(750, 20, 309, 29);
     panel1.add(lblNewLabel);
 
-    JButton btnReturn = new JButton("Danh sách giáo viên");
+    JButton btnReturn = new JButton("Danh sách sinh viên");
     btnReturn.setBounds(22, 13, 90, 38);
     panel1.add(btnReturn);
     btnSearch.addActionListener(new ActionListener() {
@@ -212,7 +208,7 @@ public class studentGUI extends JFrame {
     btnReturn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         f.setVisible(false);
-        teacherGUI p = new teacherGUI();
+        studentGUI p = new studentGUI();
         p.f.setVisible(true);
       }
     });
@@ -231,7 +227,7 @@ public class studentGUI extends JFrame {
     tfCode.setText("");
     tfLastName.setText("");
     tfFirstName.setText("");
-    tfHireDate.setText("");
+    tfEnrollmentDate.setText("");
     tfCode.setEnabled(true);
   }
 
@@ -241,23 +237,23 @@ public class studentGUI extends JFrame {
       tfCode.setText(String.valueOf(model.getValueAt(selectedIndex, 1)));
       tfLastName.setText(String.valueOf(model.getValueAt(selectedIndex, 2)));
       tfFirstName.setText(String.valueOf(model.getValueAt(selectedIndex, 3)));
-      tfHireDate.setText(String.valueOf(model.getValueAt(selectedIndex, 4)));
+      tfEnrollmentDate.setText(String.valueOf(model.getValueAt(selectedIndex, 4)));
       tfCode.setEnabled(false);
     }
   }
 
   private void btnAddActionPerformed(ActionEvent e) {
     if (!tfLastName.getText().trim().equals("")
-        && !tfFirstName.getText().trim().equals("") && !tfHireDate.getText().trim().equals("")) {
+        && !tfFirstName.getText().trim().equals("") && !tfEnrollmentDate.getText().trim().equals("")) {
       try {
         int code = Integer.parseInt(tfCode.getText());
         String lastName = tfLastName.getText();
         String firstName = tfFirstName.getText();
-        String hireDate = tfHireDate.getText();
+        String enrollmentDate = tfEnrollmentDate.getText();
 
-        Student p = new Student(code, lastName, firstName, hireDate);
+        Teacher p = new Teacher(code, lastName, firstName, enrollmentDate);
 
-        JOptionPane.showMessageDialog(null, stuBBL.addStudent(p));
+        JOptionPane.showMessageDialog(null, teaBLL.addTeacher(p));
 
         displayList();
         btnResetActionPerformed(e);
@@ -265,24 +261,24 @@ public class studentGUI extends JFrame {
 
       }
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
+      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin giáo viên");
     }
   }
 
   private void btnEditActionPerformed(ActionEvent e) {
     int index = table.getSelectedRow();
     if (index >= 0 && !tfCode.getText().trim().equals("") && !tfLastName.getText().trim().equals("")
-        && !tfFirstName.getText().trim().equals("") && !tfHireDate.getText().trim().equals("")) {
-      Student p = new Student();
+        && !tfFirstName.getText().trim().equals("") && !tfEnrollmentDate.getText().trim().equals("")) {
+      Teacher p = new Teacher();
       p.setPersonID(Integer.parseInt(tfCode.getText()));
       p.setLastName(tfLastName.getText());
       p.setFirstName(tfFirstName.getText());
-      p.setHireDate(tfHireDate.getText());
-      JOptionPane.showMessageDialog(null, stuBBL.editStudent(p));
+      p.setEnrollmentDate(tfEnrollmentDate.getText());
+      JOptionPane.showMessageDialog(null, teaBLL.editTeacher(p));
       displayList();
       btnResetActionPerformed(e);
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
+      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin giáo viên");
     }
   }
 
@@ -290,55 +286,55 @@ public class studentGUI extends JFrame {
     int selectedIndex = table.getSelectedRow();
     if (selectedIndex >= 0 && !tfCode.getText().equals("")) {
       int code = Integer.parseInt(tfCode.getText());
-      int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa sinh viên này?", "Question",
+      int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa giáo viên này?", "Question",
           JOptionPane.YES_NO_OPTION);
 
       if (option == JOptionPane.YES_OPTION) {
         int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
             JOptionPane.YES_NO_OPTION);
         if (sure == JOptionPane.YES_OPTION) {
-          JOptionPane.showMessageDialog(null, stuBBL.deleteStudent(code));
+          JOptionPane.showMessageDialog(null, teaBLL.deleteTeacher(code));
           displayList();
           btnResetActionPerformed(e);
         }
       }
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm cần xóa");
+      JOptionPane.showMessageDialog(null, "Vui lòng chọn giáo viên cần xóa");
     }
   }
 
   private void btnSearchActionPerformed(ActionEvent e) {
-    String studentName = tfFind.getText();
-    if (studentName != null && studentName.length() > 0) {
-      studentList = stuBBL.searchStudentByName(studentName);
-      if (studentList.size() == 0) {
-        JOptionPane.showMessageDialog(null, "Không có sinh viên cần tìm");
+    String TeacherName = tfFind.getText();
+    if (TeacherName != null && TeacherName.length() > 0) {
+      teacherList = teaBLL.searchTeacherByName(TeacherName);
+      if (teacherList.size() == 0) {
+        JOptionPane.showMessageDialog(null, "Không có giáo viên cần tìm");
         displayList();
       } else {
         model.setRowCount(0);
         int i = 0;
-        while (i < studentList.size()) {
-          Student p = studentList.get(i);
+        while (i < teacherList.size()) {
+          Teacher p = teacherList.get(i);
           model.addRow(new Object[] {
-              model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getHireDate()
+              model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getEnrollmentDate()
           });
           i++;
         }
       }
 
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng nhập tên sinh viên cần tìm");
+      JOptionPane.showMessageDialog(null, "Vui lòng nhập tên giáo viên cần tìm");
     }
   }
 
   private void displayList() {
     model.setRowCount(0);
-    studentList = stuBBL.getAllStudent();
+    teacherList = teaBLL.getAllTeacher();
     int i = 0;
-    while (i < studentList.size()) {
-      Student p = studentList.get(i);
+    while (i < teacherList.size()) {
+      Teacher p = teacherList.get(i);
       model.addRow(new Object[] {
-          model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getHireDate()
+          model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getEnrollmentDate()
       });
       i++;
     }

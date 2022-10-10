@@ -10,7 +10,6 @@ public class databaseConnect {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/school2?useSSL=false", "root", "");
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}

@@ -1,240 +1,139 @@
 package UI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Dimension;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.ImageIcon;
-import java.awt.TextArea;
-import java.awt.ScrollPane;
-import javax.swing.JToolBar;
 import java.awt.Panel;
 
-import UI.*;
-
 public class adminGUI extends JFrame {
-	private JPanel contentPane;
-	public JFrame f = new JFrame();
+  private JPanel contentPane;
+  public JFrame f = new JFrame();
 
-	public static void main(String[] args) {
-		new adminGUI();
-	}
+  // public static void main(String[] args) {
+  // new adminGUI();
+  // }
 
-	public adminGUI() {
-		initComponent();
-	}
+  // public adminGUI() {
+  // initComponent();
+  // }
 
-	/**
-	 * Create the frame.
-	 * 
-	 * @return
-	 */
-	public void initComponent() {
-		setTitle("Trang admin");
-		setSize(1300, 530);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(230, 230, 250));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		JPanel panel = new JPanel();
-		panel.setForeground(Color.BLACK);
-		panel.setBackground(new Color(0, 0, 0));
-		panel.setBounds(0, 139, 277, 360);
-		contentPane.add(panel);
-		panel.setLayout(null);
+  /**
+   * Create the frame.
+   * 
+   * @return
+   */
+  public void initComponent() {
+    setTitle("Trang admin");
+    setSize(448, 476);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    contentPane = new JPanel();
+    contentPane.setBackground(new Color(230, 230, 250));
+    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    setContentPane(contentPane);
+    contentPane.setLayout(null);
 
-		JButton btnUser = new JButton("Báo cáo thống kê");
-		btnUser.setIcon(new ImageIcon("Image\\customer-10-32.png"));
-		btnUser.setForeground(new Color(0, 0, 0));
-		btnUser.setBackground(new Color(230, 230, 250));
-		btnUser.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnUser.setBounds(0, 301, 277, 59);
-		panel.add(btnUser);
+    Panel panel1 = new Panel();
+    panel1.setBackground(new Color(50, 205, 50));
+    panel1.setBounds(0, 0, 1286, 140);
+    contentPane.add(panel1);
+    panel1.setLayout(null);
 
-		btnUser.addActionListener(new ActionListener() {
+    JLabel lbHeader = new JLabel("Quản lý khóa học");
+    lbHeader.setBounds(10, 24, 418, 91);
+    panel1.add(lbHeader);
+    lbHeader.setForeground(new Color(240, 248, 255));
+    lbHeader.setFont(new Font("SansSerif", Font.BOLD, 50));
+    lbHeader.setBackground(new Color(175, 238, 238));
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
+    JButton btnStudent = new JButton("Quản lý học viên");
+    btnStudent.setBounds(74, 133, 277, 64);
+    contentPane.add(btnStudent);
+    btnStudent.setForeground(Color.BLACK);
+    btnStudent.setFont(new Font("Tahoma", Font.PLAIN, 20));
+    btnStudent.setBackground(new Color(230, 230, 250));
 
-			}
-		});
+    JButton btnTeacher = new JButton("Quản lý người dạy");
+    btnTeacher.setBounds(74, 193, 277, 64);
+    contentPane.add(btnTeacher);
+    btnTeacher.setForeground(Color.BLACK);
+    btnTeacher.setFont(new Font("Tahoma", Font.PLAIN, 20));
+    btnTeacher.setBackground(new Color(230, 230, 250));
 
-		JButton btnProduct = new JButton("Quản lí sản phẩm");
-		btnProduct.setIcon(new ImageIcon("Image\\phone-123-32.png"));
-		btnProduct.setForeground(Color.BLACK);
-		btnProduct.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnProduct.setBackground(new Color(230, 230, 250));
-		btnProduct.setBounds(0, 120, 277, 64);
-		panel.add(btnProduct);
+    JButton btnCourse = new JButton("Quản lý khóa học");
+    btnCourse.setBounds(74, 253, 277, 64);
+    contentPane.add(btnCourse);
+    btnCourse.setForeground(Color.BLACK);
+    btnCourse.setFont(new Font("Tahoma", Font.PLAIN, 20));
+    btnCourse.setBackground(new Color(230, 230, 250));
 
-		btnProduct.addActionListener(new ActionListener() {
+    JButton btnPosition = new JButton("Quản lý phân công");
+    btnPosition.setBounds(74, 313, 277, 64);
+    contentPane.add(btnPosition);
+    btnPosition.setForeground(Color.BLACK);
+    btnPosition.setFont(new Font("Tahoma", Font.PLAIN, 20));
+    btnPosition.setBackground(new Color(230, 230, 250));
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
+    JButton btnResult = new JButton("Quản lý kết quả");
+    btnResult.setBounds(74, 375, 277, 64);
+    contentPane.add(btnResult);
+    btnResult.setForeground(Color.BLACK);
+    btnResult.setFont(new Font("Tahoma", Font.PLAIN, 20));
+    btnResult.setBackground(new Color(230, 230, 250));
 
-			}
-		});
+    btnResult.addActionListener(new ActionListener() {
 
-		JButton btnAccount = new JButton("Quản lí tài khoản");
-		btnAccount.setIcon(new ImageIcon("Image\\account-25-32.png"));
-		btnAccount.setForeground(Color.BLACK);
-		btnAccount.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnAccount.setBackground(new Color(230, 230, 250));
-		btnAccount.setBounds(0, 242, 277, 64);
-		panel.add(btnAccount);
+      @Override
+      public void actionPerformed(ActionEvent e) {
 
-		btnAccount.addActionListener(new ActionListener() {
+      }
+    });
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
+    btnPosition.addActionListener(new ActionListener() {
 
-			}
-		});
+      @Override
+      public void actionPerformed(ActionEvent e) {
 
-		JButton btnEnterCoupon = new JButton("Quản lí phiếu nhập");
-		btnEnterCoupon.setIcon(new ImageIcon("Image\\paper-6-32.png"));
-		btnEnterCoupon.setForeground(Color.BLACK);
-		btnEnterCoupon.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnEnterCoupon.setBackground(new Color(230, 230, 250));
-		btnEnterCoupon.setBounds(0, 0, 277, 64);
-		panel.add(btnEnterCoupon);
+      }
+    });
 
-		btnEnterCoupon.addActionListener(new ActionListener() {
+    btnCourse.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
+      @Override
+      public void actionPerformed(ActionEvent e) {
 
-			}
-		});
+      }
+    });
 
-		JButton btnBill = new JButton("Quản lí phiếu xuất");
-		btnBill.setIcon(new ImageIcon("Image\\paper-6-32.png"));
-		btnBill.setForeground(Color.BLACK);
-		btnBill.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnBill.setBackground(new Color(230, 230, 250));
-		btnBill.setBounds(0, 60, 277, 64);
-		panel.add(btnBill);
+    btnTeacher.addActionListener(new ActionListener() {
 
-		btnBill.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        f.setVisible(false);
+        teacherGUI p = new teacherGUI();
+        p.f.setVisible(true);
+      }
+    });
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
+    btnStudent.addActionListener(new ActionListener() {
 
-			}
-		});
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        f.setVisible(false);
+        studentGUI p = new studentGUI();
+        p.f.setVisible(true);
+      }
+    });
 
-		JButton btnSupplier = new JButton("Quản lí nhà cung cấp");
-		btnSupplier.setIcon(new ImageIcon("Image\\supply-management-1-32.png"));
-		btnSupplier.setForeground(Color.BLACK);
-		btnSupplier.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnSupplier.setBackground(new Color(230, 230, 250));
-		btnSupplier.setBounds(0, 180, 277, 64);
-		panel.add(btnSupplier);
-
-		btnSupplier.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-
-		// JButton btnStatistic = new JButton("Thống kê kinh doanh");
-		// btnStatistic.setIcon(new ImageIcon("Image\\statistic-2-32.png"));
-		// btnStatistic.setForeground(Color.BLACK);
-		// btnStatistic.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		// btnStatistic.setBackground(new Color(230, 230, 250));
-		// btnStatistic.setBounds(0, 420, 277, 64);
-		// panel.add(btnStatistic);
-		// btnStatistic.addActionListener(new ActionListener() {
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// f.setVisible(false);
-		// statisticGUI u = new statisticGUI();
-		// u.f.setVisible(true);
-		// }
-		// } );
-		Panel panel1 = new Panel();
-		panel1.setBackground(new Color(50, 205, 50));
-		panel1.setBounds(0, 0, 1286, 140);
-		contentPane.add(panel1);
-		panel1.setLayout(null);
-
-		JLabel lblCaHngin = new JLabel("Cửa hàng điện thoại di động BCĐ");
-		lblCaHngin.setBounds(342, 26, 807, 91);
-		panel1.add(lblCaHngin);
-		lblCaHngin.setForeground(new Color(240, 248, 255));
-		lblCaHngin.setFont(new Font("SansSerif", Font.BOLD, 50));
-		lblCaHngin.setBackground(new Color(175, 238, 238));
-
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("Image\\shop-27-128.png"));
-		lblNewLabel.setBounds(112, 6, 128, 128);
-		panel1.add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel("Chào ADMIN");
-		lblNewLabel_1.setFont(new Font("SansSerif", Font.BOLD, 35));
-		lblNewLabel_1.setBounds(646, 139, 226, 111);
-		contentPane.add(lblNewLabel_1);
-
-		JButton btnNewButton = new JButton("Đăng xuất");
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBackground(new Color(255, 0, 0));
-		btnNewButton.setFont(new Font("SansSerif", Font.BOLD, 20));
-		btnNewButton.setIcon(new ImageIcon("Image\\logout-7-32.png"));
-		btnNewButton.setBounds(1107, 148, 173, 40);
-		contentPane.add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon("Image\\customer-service-78-256.png"));
-		lblNewLabel_2.setBounds(615, 235, 300, 300);
-		contentPane.add(lblNewLabel_2);
-
-		f.add(contentPane);
-		f.setSize(1300, 602);
-		f.setVisible(true);
-		f.setResizable(false);
-	}
+    f.add(contentPane);
+    f.setSize(448, 476);
+    f.setVisible(true);
+    f.setResizable(false);
+  }
 }

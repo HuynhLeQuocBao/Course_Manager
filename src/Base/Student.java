@@ -1,24 +1,22 @@
 package Base;
 
-import java.util.Date;
-
 public class Student extends Person {
-  private Date hireDate;
+  private String hireDate;
 
   public Student() {
 
   }
 
-  public Student(int personID, String lastName, String firstName, Date hireDate) {
+  public Student(int personID, String lastName, String firstName, String hireDate) {
     super(personID, lastName, firstName);
     this.hireDate = hireDate;
   }
 
-  public Date getHireDate() {
+  public String getHireDate() {
     return hireDate;
   }
 
-  public void setHireDate(Date hireDate) {
+  public void setHireDate(String hireDate) {
     this.hireDate = hireDate;
   }
 
