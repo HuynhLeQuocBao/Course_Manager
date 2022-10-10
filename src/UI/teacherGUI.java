@@ -37,10 +37,6 @@ public class teacherGUI extends JFrame {
   private JTable table;
   private JTextField tfCode;
 
-  public static void main(String[] args) {
-    new teacherGUI();
-  }
-
   public teacherGUI() {
     initComponent();
     displayList();
@@ -106,7 +102,7 @@ public class teacherGUI extends JFrame {
       public void actionPerformed(ActionEvent e) {
       }
     });
-    btnEdit.setBounds(187, 416, 69, 28);
+    btnEdit.setBounds(141, 416, 69, 28);
     panel.add(btnEdit);
 
     JButton btnAdd = new JButton("Thêm");
@@ -116,7 +112,7 @@ public class teacherGUI extends JFrame {
         btnAddActionPerformed(e);
       }
     });
-    btnAdd.setBounds(266, 416, 69, 28);
+    btnAdd.setBounds(257, 416, 69, 28);
     panel.add(btnAdd);
 
     JButton btnRemove = new JButton("Xóa");
@@ -125,11 +121,11 @@ public class teacherGUI extends JFrame {
         btnRemoveActionPerformed(e);
       }
     });
-    btnRemove.setBounds(10, 416, 69, 28);
+    btnRemove.setBounds(23, 416, 69, 28);
     panel.add(btnRemove);
 
     JButton btnReset = new JButton("Reset");
-    btnReset.setBounds(90, 416, 75, 28);
+    btnReset.setBounds(87, 465, 176, 38);
     panel.add(btnReset);
 
     JLabel lbCode = new JLabel("PersonID");
@@ -143,6 +139,17 @@ public class teacherGUI extends JFrame {
     tfCode.setColumns(10);
     tfCode.setBounds(126, 48, 186, 28);
     panel.add(tfCode);
+
+    JButton btnReturn = new JButton("Xem danh sách sinh viên");
+    btnReturn.setBounds(43, 528, 251, 38);
+    panel.add(btnReturn);
+    btnReturn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        f.setVisible(false);
+        studentGUI p = new studentGUI();
+        p.f.setVisible(true);
+      }
+    });
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setBounds(324, 59, 1036, 652);
     contentPane.add(scrollPane);
@@ -170,7 +177,7 @@ public class teacherGUI extends JFrame {
     JLabel lbTitle = new JLabel("Danh Sách Giáo Viên");
     lbTitle.setForeground(Color.WHITE);
     lbTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
-    lbTitle.setBounds(315, 6, 1000, 36);
+    lbTitle.setBounds(315, 0, 309, 62);
     panel1.add(lbTitle);
 
     JButton btnSearch = new JButton("Tìm kiếm");
@@ -181,15 +188,15 @@ public class teacherGUI extends JFrame {
     panel1.add(tfFind);
     tfFind.setColumns(10);
 
-    JLabel lblNewLabel = new JLabel("Tìm kiếm giáo viên theo tên");
+    JLabel lblNewLabel = new JLabel("Tìm kiếm theo tên giáo viên");
     lblNewLabel.setForeground(Color.WHITE);
     lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
-    lblNewLabel.setBounds(750, 20, 309, 29);
+    lblNewLabel.setBounds(786, 0, 214, 62);
     panel1.add(lblNewLabel);
 
-    JButton btnReturn = new JButton("Xem danh sách sinh viên");
-    btnReturn.setBounds(22, 13, 193, 38);
-    panel1.add(btnReturn);
+    JButton btnReturn_1 = new JButton("Quay lại");
+    btnReturn_1.setBounds(10, 6, 96, 46);
+    panel1.add(btnReturn_1);
     btnSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         btnSearchActionPerformed(e);
@@ -207,11 +214,11 @@ public class teacherGUI extends JFrame {
         btnResetActionPerformed(e);
       }
     });
-    btnReturn.addActionListener(new ActionListener() {
+    btnReturn_1.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         f.setVisible(false);
-        studentGUI p = new studentGUI();
-        p.f.setVisible(true);
+        managerGUI r = new managerGUI();
+        r.f.setVisible(true);
       }
     });
     table.addMouseListener(new MouseAdapter() {
