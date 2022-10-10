@@ -52,7 +52,7 @@ public class teacherGUI extends JFrame {
    * @return
    */
   public void initComponent() {
-    setTitle("Quản lý Giáo Viên");
+    setTitle("Quản lý giáo viên");
     setSize(1366, 740);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     contentPane = new JPanel();
@@ -93,7 +93,7 @@ public class teacherGUI extends JFrame {
     JLabel lbEnrollmentDate = new JLabel("EnrollmentDate");
     lbEnrollmentDate.setFont(new Font("SansSerif", Font.BOLD, 12));
     lbEnrollmentDate.setForeground(new Color(0, 0, 0));
-    lbEnrollmentDate.setBounds(25, 314, 55, 28);
+    lbEnrollmentDate.setBounds(25, 314, 91, 28);
     panel.add(lbEnrollmentDate);
 
     tfEnrollmentDate = new JTextField();
@@ -113,7 +113,6 @@ public class teacherGUI extends JFrame {
     btnAdd.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
         btnAddActionPerformed(e);
       }
     });
@@ -182,14 +181,14 @@ public class teacherGUI extends JFrame {
     panel1.add(tfFind);
     tfFind.setColumns(10);
 
-    JLabel lblNewLabel = new JLabel("Tìm kiếm theo tên giáo viên");
+    JLabel lblNewLabel = new JLabel("Tìm kiếm giáo viên theo tên");
     lblNewLabel.setForeground(Color.WHITE);
     lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
     lblNewLabel.setBounds(750, 20, 309, 29);
     panel1.add(lblNewLabel);
 
-    JButton btnReturn = new JButton("Danh sách sinh viên");
-    btnReturn.setBounds(22, 13, 90, 38);
+    JButton btnReturn = new JButton("Xem danh sách sinh viên");
+    btnReturn.setBounds(22, 13, 193, 38);
     panel1.add(btnReturn);
     btnSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -205,7 +204,6 @@ public class teacherGUI extends JFrame {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
         btnResetActionPerformed(e);
       }
     });
@@ -265,7 +263,7 @@ public class teacherGUI extends JFrame {
 
       }
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin giáo viên");
+      JOptionPane.showMessageDialog(null, "Vui lÃ²ng nháº­p Ä‘áº§y Ä‘á»§ thÃ´ng tin giÃ¡o viÃªn");
     }
   }
 
@@ -282,7 +280,7 @@ public class teacherGUI extends JFrame {
       displayList();
       btnResetActionPerformed(e);
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin giáo viên");
+      JOptionPane.showMessageDialog(null, "Vui lÃ²ng nháº­p Ä‘áº§y Ä‘á»§ thÃ´ng tin giÃ¡o viÃªn");
     }
   }
 
@@ -290,11 +288,11 @@ public class teacherGUI extends JFrame {
     int selectedIndex = table.getSelectedRow();
     if (selectedIndex >= 0 && !tfCode.getText().equals("")) {
       int code = Integer.parseInt(tfCode.getText());
-      int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa giáo viên này?", "Question",
+      int option = JOptionPane.showConfirmDialog(null, "Báº¡n muá»‘n xÃ³a giÃ¡o viÃªn nÃ y?", "Question",
           JOptionPane.YES_NO_OPTION);
 
       if (option == JOptionPane.YES_OPTION) {
-        int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
+        int sure = JOptionPane.showConfirmDialog(null, "Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a?", "Question",
             JOptionPane.YES_NO_OPTION);
         if (sure == JOptionPane.YES_OPTION) {
           JOptionPane.showMessageDialog(null, teaBLL.deleteTeacher(code));
@@ -303,7 +301,7 @@ public class teacherGUI extends JFrame {
         }
       }
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng chọn giáo viên cần xóa");
+      JOptionPane.showMessageDialog(null, "Vui lÃ²ng chá»�n giÃ¡o viÃªn cáº§n xÃ³a");
     }
   }
 
@@ -312,7 +310,7 @@ public class teacherGUI extends JFrame {
     if (TeacherName != null && TeacherName.length() > 0) {
       teacherList = teaBLL.searchTeacherByName(TeacherName);
       if (teacherList.size() == 0) {
-        JOptionPane.showMessageDialog(null, "Không có giáo viên cần tìm");
+        JOptionPane.showMessageDialog(null, "KhÃ´ng cÃ³ giÃ¡o viÃªn cáº§n tÃ¬m");
         displayList();
       } else {
         model.setRowCount(0);
@@ -327,7 +325,7 @@ public class teacherGUI extends JFrame {
       }
 
     } else {
-      JOptionPane.showMessageDialog(null, "Vui lòng nhập tên giáo viên cần tìm");
+      JOptionPane.showMessageDialog(null, "Vui lÃ²ng nháº­p tÃªn giÃ¡o viÃªn cáº§n tÃ¬m");
     }
   }
 

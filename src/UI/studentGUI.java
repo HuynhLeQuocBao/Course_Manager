@@ -188,8 +188,8 @@ public class studentGUI extends JFrame {
     lblNewLabel.setBounds(750, 20, 309, 29);
     panel1.add(lblNewLabel);
 
-    JButton btnReturn = new JButton("Danh sách giáo viên");
-    btnReturn.setBounds(22, 13, 90, 38);
+    JButton btnReturn = new JButton("Xem danh sách giáo viên");
+    btnReturn.setBounds(22, 13, 193, 38);
     panel1.add(btnReturn);
     btnSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
