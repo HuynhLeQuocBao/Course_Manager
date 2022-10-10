@@ -171,7 +171,7 @@ public class studentGUI extends JFrame {
     JLabel lbTitle = new JLabel("Danh Sách Sinh Viên");
     lbTitle.setForeground(Color.WHITE);
     lbTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
-    lbTitle.setBounds(315, 6, 387, 36);
+    lbTitle.setBounds(315, 6, 1000, 36);
     panel1.add(lbTitle);
 
     JButton btnSearch = new JButton("Tìm kiếm");
