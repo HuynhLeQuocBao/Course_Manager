@@ -23,7 +23,7 @@ public class StudentGradeDAL {
     {
       try
       {
-        String sql = "SELECT * FROM `studentgrade`";
+        String sql = "SELECT * FROM `studentgrade` ORDER BY (COURSEID)";
         Statement statement = dc.connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         
@@ -204,6 +204,36 @@ public class StudentGradeDAL {
     }
     return s;
   }
+  //update
+  public ArrayList<String> getAllCourseID()
+  {
+    ArrayList<String> s =new ArrayList<String>();
+    if(dc.openConnection())
+    {
+      try
+      {
+        String sql = "SELECT courseID,title FROM course";
+        Statement stm = dc.connection.createStatement();
+        ResultSet rs = stm.executeQuery(sql);
+        while(rs.next())
+        {
+          s.add(rs.getInt("courseID")+"_"+rs.getString("Title"));
+        }
+      }
+      catch(SQLException ex)
+      {
+        System.out.println(ex);
+        
+      }
+      finally
+      {
+        dc.closeConnection();
+      }
+    }
+    return s;
+  }
+  //
+  //lỗi
   public ArrayList<String> getAllStudent()
   {
     ArrayList<String> s =new ArrayList<String>();
@@ -231,6 +261,7 @@ public class StudentGradeDAL {
     }
     return s;
   }
+  
   public String StudentName(int StudentID)
   {
     String s="";
@@ -257,6 +288,35 @@ public class StudentGradeDAL {
     }
     return s;
   }
+  //update
+  public ArrayList<String> getAllStudentID()
+  {
+    ArrayList<String> s =new ArrayList<String>();
+    if(dc.openConnection())
+    {
+      try
+      {
+        String sql = "SELECT PersonID,Firstname,Lastname FROM `person`";
+        Statement stm = dc.connection.createStatement();
+        ResultSet rs = stm.executeQuery(sql);
+        while(rs.next())
+        {
+          s.add(rs.getInt("PersonID")+"_"+rs.getString("Firstname")+" "+ rs.getString("Lastname"));
+        }
+      }
+      catch(SQLException ex)
+      {
+        System.out.println(ex);
+        
+      }
+      finally
+      {
+        dc.closeConnection();
+      }
+    }
+    return s;
+  }
+  //
   public ArrayList<StudentGrade> searchBycode(int codeID)
   {
     ArrayList<StudentGrade> searchBycodeList = new ArrayList<StudentGrade>();
@@ -310,7 +370,7 @@ public class StudentGradeDAL {
             + "WHERE StudentID IN (\r\n"
             + "SELECT personID\r\n"
             + "FROM person\r\n"
-            + "WHERE FIRSTNAME LIKE '%"+name+"%' OR lastname LIKE '%"+name+"%'\r\n"
+            + "WHERE concat(firstname,' ',lastname) LIKE '%"+name+"%'\r\n"
             + ")";
         Statement statement = dc.connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
@@ -335,6 +395,40 @@ public class StudentGradeDAL {
 
     }
     return searchBynameList;
+  }
+  public ArrayList<StudentGrade> searchbyCourseID(int id)
+  {
+    ArrayList<StudentGrade> studentgradeList = new ArrayList<StudentGrade>();
+    if(dc.openConnection())
+    {
+      try
+      {
+        String sql = "SELECT * \r\n"
+            + "FROM `studentgrade` \r\n"
+            + "WHERE CourseID ="+ id;
+        Statement stm = dc.connection.createStatement();
+        ResultSet rs = stm.executeQuery(sql);
+        while(rs.next())
+        {
+          StudentGrade stg = new StudentGrade(
+              rs.getInt("enrollmentID"),
+              rs.getInt("courseID"),
+              rs.getInt("StudentID"),
+              rs.getDouble("Grade"));
+          studentgradeList.add(stg);
+        }
+      }
+      catch(SQLException ex)
+      {
+        System.out.println(ex);
+      }
+      finally
+      {
+        dc.closeConnection();
+      }
+      
+    }
+    return studentgradeList;
   }
   public static void main(String[] args) {
     StudentGradeDAL a = new StudentGradeDAL();

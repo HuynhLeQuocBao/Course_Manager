@@ -63,5 +63,17 @@ public class StudentGradeBLL {
     {
       return studentGradeDAL.StudentName(StudentID);
     }
+    public  ArrayList<String> getAllStudentID()
+    {
+      return studentGradeDAL.getAllStudentID();
+    }
+    public  ArrayList<String> getAllCourseID()
+    {
+      return studentGradeDAL.getAllCourseID();
+    }
+    public  ArrayList<StudentGrade> searchbyCourseID(int id)
+    {
+      return studentGradeDAL.searchbyCourseID(id);
+    }
     
 } 

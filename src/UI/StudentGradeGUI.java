@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,6 +47,7 @@ public class StudentGradeGUI
   private JTextField tfFind;
   private int enrollmentID = 0;
   DefaultTableModel model = new DefaultTableModel();
+  private JComboBox<String> cbxcoursefind;
   
   private JTable table;
   
@@ -81,7 +83,7 @@ public class StudentGradeGUI
     lCodecourse.setBounds(25, 10, 91, 28);
     panel.add(lCodecourse);
     
-    cbxcourseID =  new JComboBox(studentgradeBLL.getAllCourse().toArray());
+    cbxcourseID =  new JComboBox(studentgradeBLL.getAllCourseID().toArray());
     cbxcourseID.setBounds(126, 12, 186, 28);
     panel.add(cbxcourseID);
     
@@ -101,7 +103,7 @@ public class StudentGradeGUI
       @Override
       public void itemStateChanged(ItemEvent e) {
         // TODO Auto-generated method stub
-        int courseid = Integer.parseInt(cbxcourseID.getSelectedItem()+"");
+        int courseid = Integer.parseInt(courseIDbycbx(cbxcourseID.getSelectedItem()+""));
         tfcourseName.setText(""+studentgradeBLL.courseName(courseid));
       }
   });
@@ -112,7 +114,7 @@ public class StudentGradeGUI
     lCodestudent.setBounds(25, 130, 106, 28);
     panel.add(lCodestudent);
 
-    cbxstudentID = new JComboBox(studentgradeBLL.getAllStudent().toArray());
+    cbxstudentID = new JComboBox(studentgradeBLL.getAllStudentID().toArray());
     cbxstudentID.setBounds(126, 132, 186, 28);
     panel.add(cbxstudentID);
     
@@ -131,7 +133,7 @@ public class StudentGradeGUI
       @Override
       public void itemStateChanged(ItemEvent e) {
         // TODO Auto-generated method stub
-        int courseid = Integer.parseInt(cbxstudentID.getSelectedItem()+"");
+        int courseid = Integer.parseInt(courseIDbycbx(cbxstudentID.getSelectedItem()+""));
         tfStudentName.setText(""+studentgradeBLL.StudentName(courseid));
       }
   });
@@ -196,11 +198,14 @@ public class StudentGradeGUI
     };
     table.setModel(model);
     model.addColumn("EnrollmentID");
+   
     model.addColumn("CourseID");
     model.addColumn("Course Name");
     model.addColumn("StudentID");
     model.addColumn("Student Name");
     model.addColumn("Grade");
+    // ẩn cột enrollmentID đi
+    table.removeColumn(table.getColumnModel().getColumn(0));
     
     
     JScrollPane scrollPane = new JScrollPane();
@@ -213,12 +218,16 @@ public class StudentGradeGUI
         
         int selectedIndex = table.getSelectedRow();
         if (selectedIndex >= 0) {
-            enrollmentID = Integer.parseInt(String.valueOf(model.getValueAt(selectedIndex, 0)));           
-            cbxcourseID.setSelectedItem(String.valueOf(model.getValueAt(selectedIndex, 1)));
-            tfcourseName.setText(String.valueOf(model.getValueAt(selectedIndex, 2)));
-            cbxstudentID.setSelectedItem(String.valueOf(model.getValueAt(selectedIndex, 3)));
+            enrollmentID = Integer.parseInt(String.valueOf(model.getValueAt(selectedIndex, 0)));  
+            String courseIDname = String.valueOf(model.getValueAt(selectedIndex,1))+"_"+
+                                  String.valueOf(model.getValueAt(selectedIndex,2));
+            String studentIDname =String.valueOf(model.getValueAt(selectedIndex,3))+"_"+
+                                  String.valueOf(model.getValueAt(selectedIndex,4));
+            cbxcourseID.setSelectedItem(String.valueOf(""+courseIDname));
+            cbxstudentID.setSelectedItem(String.valueOf(""+studentIDname));
             tfStudentName.setText(String.valueOf(model.getValueAt(selectedIndex, 4)));
             tfgrade.setText(String.valueOf(model.getValueAt(selectedIndex, 5)));
+            System.out.print(studentIDname);
         }
       }
     });
@@ -234,9 +243,43 @@ public class StudentGradeGUI
     JLabel lbTitle = new JLabel("Danh Sách Kết Quả Khóa Học");
     lbTitle.setForeground(Color.WHITE);
     lbTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
-    lbTitle.setBounds(200, 6, 500, 36);
+    lbTitle.setBounds(150, 6, 500, 36);
     panel1.add(lbTitle);
     
+    JLabel lFilter= new JLabel("Filter by courseID");
+    lFilter.setForeground(Color.WHITE);
+    lFilter.setFont(new Font("SansSerif", Font.BOLD, 14));
+    lFilter.setBounds(670,15, 500, 36);
+    panel1.add(lFilter);
+    
+    
+    cbxcoursefind =  new JComboBox(studentgradeBLL.getAllCourseID().toArray());
+    cbxcoursefind.setBounds(800, 20, 186,30);
+    panel1.add(cbxcoursefind);
+    cbxcoursefind.addItemListener(new ItemListener() {
+      
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        // TODO Auto-generated method stub
+        enrollmentID = 0;
+        String itemselected= cbxcoursefind.getSelectedItem()+"";
+        int id  = Integer.parseInt(courseIDbycbx(itemselected));
+        model.setRowCount(0);
+        studentGradeList = studentgradeBLL.searchbyCourseID(id);
+        int i = 0;
+        while (i < studentGradeList.size()) {
+          StudentGrade p = studentGradeList.get(i);
+          model.addRow(new Object[] 
+              {
+              p.getEnrollmentID(), p.getCourseID(),studentgradeBLL.courseName(p.getCourseID()), 
+              p.getStudenID(),studentgradeBLL.StudentName(p.getStudenID()),p.getGrade()
+              });
+          
+          i++; 
+        }
+      }
+    });
+        
     JButton btnSearch = new JButton("Tìm kiếm");
     btnSearch.setBounds(1252, 12, 90, 38);
     panel1.add(btnSearch);
@@ -259,12 +302,7 @@ public class StudentGradeGUI
     panel1.add(btnTrLi);
     btnTrLi.setBackground(new Color(50, 205, 50));
     btnTrLi.setIcon(new ImageIcon("Image\\return-24-48.png"));
-    
-    JLabel lblNewLabel = new JLabel("(Tìm kiếm theo mã)");
-    lblNewLabel.setForeground(Color.WHITE);
-    lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
-    lblNewLabel.setBounds(750, 20, 309, 29);
-    panel1.add(lblNewLabel);
+
   }
   public void showtable()
   {
@@ -286,17 +324,17 @@ public class StudentGradeGUI
   private void btnAddActionPerformed(ActionEvent e) {
     
     try {
-      int courseid = Integer.parseInt(""+cbxcourseID.getSelectedItem());
-      int studentID = Integer.parseInt("" + cbxstudentID.getSelectedItem());
-      
+      int courseID  = Integer.parseInt(""+courseIDbycbx(""+cbxcourseID.getSelectedItem()));
+      System.out.println(courseID);
+      int studentID = Integer.parseInt("" + courseIDbycbx(""+cbxstudentID.getSelectedItem()));
       if((""+tfgrade.getText()).equals(""))
       {
-        JOptionPane.showMessageDialog(null, studentgradeBLL.addwithoutGrade(courseid, studentID));
+        JOptionPane.showMessageDialog(null, studentgradeBLL.addwithoutGrade(courseID, studentID));
       }
       else
       {
         Double grade = Double.parseDouble(""+tfgrade.getText());
-        StudentGrade std = new StudentGrade(this.enrollmentID,courseid,studentID,grade);
+        StudentGrade std = new StudentGrade(this.enrollmentID,courseID,studentID,grade);
         
         JOptionPane.showMessageDialog(null, studentgradeBLL.add(std));
         
@@ -311,8 +349,10 @@ public class StudentGradeGUI
     }
   private void btnResetActionPerformed(ActionEvent e)
   {
+        enrollmentID = 0;
         cbxcourseID.setSelectedIndex(0);
         cbxstudentID.setSelectedIndex(0);
+        cbxcoursefind.setSelectedIndex(0);
         tfgrade.setText("");
         displayList();
   }
@@ -339,14 +379,21 @@ public class StudentGradeGUI
         }
   }
   }
+  //cắt chuỗi trong combobox để lấy mã
+  public String courseIDbycbx(String a)
+  {
+    StringTokenizer st = new StringTokenizer(a,"_");
+    return st.nextToken();
+  }
   private void btnEditActionPerformed(ActionEvent e) {
     // TODO Auto-generated method stub
     try {
       int index = table.getSelectedRow();
           
           int enrollmentID = this.enrollmentID;
-          int courseID  = Integer.parseInt(""+cbxcourseID.getSelectedItem());
-          int studentID = Integer.parseInt("" + cbxstudentID.getSelectedItem());
+          int courseID  = Integer.parseInt(""+courseIDbycbx(""+cbxcourseID.getSelectedItem()));
+          System.out.println(courseID);
+          int studentID = Integer.parseInt("" + courseIDbycbx(""+cbxstudentID.getSelectedItem()));
           double grade;
           if(tfgrade.getText().equals(""))
           {
