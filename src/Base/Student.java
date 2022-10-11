@@ -1,13 +1,13 @@
 package Base;
 
-public class Teacher extends Person {
+public class Student extends Person {
   private String enrollmentDate;
 
-  public Teacher() {
+  public Student() {
 
   }
 
-  public Teacher(int personID, String lastName, String firstName, String enrollmentDate) {
+  public Student(int personID, String lastName, String firstName, String enrollmentDate) {
     super(personID, lastName, firstName);
     this.enrollmentDate = enrollmentDate;
   }

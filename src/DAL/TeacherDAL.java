@@ -13,7 +13,7 @@ public class TeacherDAL {
     if (dc.openConnection()) {
       try {
         // query
-        String sql = "select * from person where HireDate IS NULL";
+        String sql = "select * from person where EnrollmentDate IS NULL";
         Statement statement = dc.connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(sql);
@@ -22,7 +22,7 @@ public class TeacherDAL {
           Teacher std = new Teacher(
               resultSet.getInt("PersonID"),
               resultSet.getString("Lastname"), resultSet.getString("Firstname"),
-              resultSet.getString("EnrolLmentDate"));
+              resultSet.getString("HireDate"));
           teacherList.add(std);
         }
       } catch (SQLException e) {
@@ -38,13 +38,13 @@ public class TeacherDAL {
     boolean result = false;
     if (dc.openConnection()) {
       try {
-        String sql = "insert into person(PersonID, Lastname, Firstname, EnrolLmentDate) values (?, ?, ?, ?)";
+        String sql = "insert into person(PersonID, Lastname, Firstname, HireDate) values (?, ?, ?, ?)";
         PreparedStatement statement = dc.connection.prepareCall(sql);
 
         statement.setInt(1, p.getPersonID());
         statement.setString(2, p.getLastName());
         statement.setString(3, p.getFirstName());
-        statement.setString(4, p.getEnrollmentDate());
+        statement.setString(4, p.getHireDate());
 
         if (statement.executeUpdate() >= 1) {
           result = true;
@@ -62,12 +62,12 @@ public class TeacherDAL {
     boolean result = false;
     if (dc.openConnection()) {
       try {
-        String sql = "update person set Lastname=?, Firstname=?, EnrolLmentDate=? where PersonID = ?";
+        String sql = "update person set Lastname=?, Firstname=?, HireDate=? where PersonID = ?";
         PreparedStatement statement = dc.connection.prepareCall(sql);
 
         statement.setString(1, p.getLastName());
         statement.setString(2, p.getFirstName());
-        statement.setString(3, p.getEnrollmentDate());
+        statement.setString(3, p.getHireDate());
         statement.setInt(4, p.getPersonID());
 
         if (statement.executeUpdate() >= 1) {
@@ -109,7 +109,7 @@ public class TeacherDAL {
     if (dc.openConnection()) {
       try {
         // query
-        String sql = "select * from person where concat(Lastname, Firstname) like ? and HireDate IS NULL";
+        String sql = "select * from person where concat(Lastname, Firstname) like ? and EnrolLmentDate IS NULL";
         PreparedStatement statement = dc.connection.prepareCall(sql);
         statement.setString(1, "%" + teacherName + "%");
 
@@ -119,7 +119,7 @@ public class TeacherDAL {
           Teacher std = new Teacher(
               resultSet.getInt("PersonID"),
               resultSet.getString("Lastname"), resultSet.getString("Firstname"),
-              resultSet.getString("EnrolLmentDate"));
+              resultSet.getString("HireDate"));
           teacherList.add(std);
         }
       } catch (SQLException e) {
