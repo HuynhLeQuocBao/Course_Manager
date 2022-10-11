@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import BLL.courseInstructorBLL;
 import java.awt.Panel;
 import Base.CourseInstructor;
+import javax.swing.JComboBox;
 
 public class courseInstructorGUI extends JFrame {
 
@@ -29,11 +30,9 @@ public class courseInstructorGUI extends JFrame {
   courseInstructorBLL instructorBBL = new courseInstructorBLL();
   public JFrame f = new JFrame();
   private JPanel contentPane;
-  private JTextField tfCourseID;
   private JTextField tfFind;
   DefaultTableModel model = new DefaultTableModel();
   private JTable table;
-  private JTextField tfPersonID;
 
   public courseInstructorGUI() {
     initComponent();
@@ -67,11 +66,6 @@ public class courseInstructorGUI extends JFrame {
     lbCourseID.setForeground(new Color(0, 0, 0));
     lbCourseID.setBounds(25, 134, 91, 28);
     panel.add(lbCourseID);
-
-    tfCourseID = new JTextField();
-    tfCourseID.setBounds(126, 136, 186, 28);
-    panel.add(tfCourseID);
-    tfCourseID.setColumns(10);
 
     JButton btnEdit = new JButton("Sửa");
     btnEdit.addActionListener(new ActionListener() {
@@ -110,11 +104,14 @@ public class courseInstructorGUI extends JFrame {
     lbPersonID.setFont(new Font("SansSerif", Font.BOLD, 12));
     lbPersonID.setBounds(25, 46, 91, 28);
     panel.add(lbPersonID);
-
-    tfPersonID = new JTextField();
-    tfPersonID.setColumns(10);
-    tfPersonID.setBounds(126, 48, 186, 28);
-    panel.add(tfPersonID);
+    
+    JComboBox cbPersonID = new JComboBox();
+    cbPersonID.setBounds(126, 48, 186, 28);
+    panel.add(cbPersonID);
+    
+    JComboBox cbCourseID = new JComboBox();
+    cbCourseID.setBounds(126, 134, 186, 28);
+    panel.add(cbCourseID);
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setBounds(324, 59, 1036, 652);
     contentPane.add(scrollPane);
@@ -157,7 +154,7 @@ public class courseInstructorGUI extends JFrame {
     JLabel lbInstructor = new JLabel("Tìm kiếm theo tên giảng viên");
     lbInstructor.setForeground(Color.WHITE);
     lbInstructor.setFont(new Font("Tahoma", Font.BOLD, 15));
-    lbInstructor.setBounds(786, 0, 227, 62);
+    lbInstructor.setBounds(778, 0, 227, 62);
     panel1.add(lbInstructor);
 
     JButton btnReturn = new JButton("Quay lại");
