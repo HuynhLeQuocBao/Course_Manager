@@ -7,7 +7,7 @@ public class databaseConnect {
 
 	public boolean openConnection() {
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/school2?useSSL=false", "root", "");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/school?useSSL=false", "root", "");
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
