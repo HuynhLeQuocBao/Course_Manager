@@ -298,18 +298,20 @@ public class StudentGradeDAL {
       try
       {
         String sql = "SELECT *\r\n"
-            + "FROM studentgrade\r\n"
-            + "WHERE courseID IN(\r\n"
-            + "select course.CourseID\r\n"
-            + "from course \r\n"
-            + "where course.Title like \"%a%\" )\r\n"
+            + "FROM studentgrade \r\n"
+            + "WHERE CourseID IN (\r\n"
+            + "SELECT CourseID\r\n"
+            + "FROM course\r\n"
+            + "WHERE Title LIKE '%"+name+"%'\r\n"
+            + ")\r\n"
             + "UNION\r\n"
             + "SELECT *\r\n"
-            + "FROM studentgrade\r\n"
-            + "WHERE studentgrade.StudentID IN(\r\n"
-            + "select person.PersonID AS StudentID\r\n"
-            + "from person \r\n"
-            + "where person.Lastname like \"%'"+name+"'%\" OR person.Firstname LIKE \"%'"+name+"'%\")";
+            + "FROM studentgrade \r\n"
+            + "WHERE StudentID IN (\r\n"
+            + "SELECT personID\r\n"
+            + "FROM person\r\n"
+            + "WHERE FIRSTNAME LIKE '%"+name+"%' OR lastname LIKE '%"+name+"%'\r\n"
+            + ")";
         Statement statement = dc.connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         
