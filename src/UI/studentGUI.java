@@ -86,11 +86,11 @@ public class studentGUI extends JFrame {
     panel.add(tfFirstName);
     tfFirstName.setColumns(10);
 
-    JLabel lbHireDate = new JLabel("HireDate");
-    lbHireDate.setFont(new Font("SansSerif", Font.BOLD, 12));
-    lbHireDate.setForeground(new Color(0, 0, 0));
-    lbHireDate.setBounds(25, 314, 55, 28);
-    panel.add(lbHireDate);
+    JLabel lbEnrollmentDate = new JLabel("EnrollmentDate");
+    lbEnrollmentDate.setFont(new Font("SansSerif", Font.BOLD, 12));
+    lbEnrollmentDate.setForeground(new Color(0, 0, 0));
+    lbEnrollmentDate.setBounds(25, 314, 91, 28);
+    panel.add(lbEnrollmentDate);
 
     tfEnrollmentDate = new JTextField();
     tfEnrollmentDate.setBounds(126, 314, 186, 28);
@@ -160,7 +160,7 @@ public class studentGUI extends JFrame {
     model.addColumn("PersonID");
     model.addColumn("Lastname");
     model.addColumn("Firstname");
-    model.addColumn("HireDate");
+    model.addColumn("EnrollmentDate");
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -264,9 +264,9 @@ public class studentGUI extends JFrame {
         int code = Integer.parseInt(tfCode.getText());
         String lastName = tfLastName.getText();
         String firstName = tfFirstName.getText();
-        String hireDate = tfEnrollmentDate.getText();
+        String enrollmentDate = tfEnrollmentDate.getText();
 
-        Student p = new Student(code, lastName, firstName, hireDate);
+        Student p = new Student(code, lastName, firstName, enrollmentDate);
 
         JOptionPane.showMessageDialog(null, stuBBL.addStudent(p));
 
