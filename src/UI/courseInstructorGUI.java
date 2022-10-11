@@ -19,14 +19,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import BLL.StudentBLL;
+import BLL.courseInstructorBLL;
 import java.awt.Panel;
-import Base.*;
+import Base.CourseInstructor;
 
 public class courseInstructorGUI extends JFrame {
 
-  List<Student> studentList = new ArrayList<Student>();
-  StudentBLL stuBBL = new StudentBLL();
+  List<CourseInstructor> courseIntructorList = new ArrayList<CourseInstructor>();
+  courseInstructorBLL instructorBBL = new courseInstructorBLL();
   public JFrame f = new JFrame();
   private JPanel contentPane;
   private JTextField tfCourseID;
@@ -37,7 +37,7 @@ public class courseInstructorGUI extends JFrame {
 
   public courseInstructorGUI() {
     initComponent();
-//    displayList();
+   displayList();
   }
 
   /**
@@ -86,7 +86,7 @@ public class courseInstructorGUI extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-//        btnAddActionPerformed(e);
+       btnAddActionPerformed(e);
       }
     });
     btnAdd.setBounds(259, 496, 69, 28);
@@ -95,7 +95,7 @@ public class courseInstructorGUI extends JFrame {
     JButton btnRemove = new JButton("Xóa");
     btnRemove.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-//        btnRemoveActionPerformed(e);
+       btnRemoveActionPerformed(e);
       }
     });
     btnRemove.setBounds(25, 496, 69, 28);
@@ -112,7 +112,6 @@ public class courseInstructorGUI extends JFrame {
     panel.add(lbPersonID);
 
     tfPersonID = new JTextField();
-    tfPersonID.setEnabled(true);
     tfPersonID.setColumns(10);
     tfPersonID.setBounds(126, 48, 186, 28);
     panel.add(tfPersonID);
@@ -127,7 +126,6 @@ public class courseInstructorGUI extends JFrame {
     model.addColumn("FirstName");
     model.addColumn("LastName");
     model.addColumn("Title Course");
-    model.addColumn("Department Name");
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -176,7 +174,7 @@ public class courseInstructorGUI extends JFrame {
     });
     btnEdit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-//        btnEditActionPerformed(e);
+       btnEditActionPerformed(e);
       }
     });
     btnReset.addActionListener(new ActionListener() {
@@ -215,68 +213,66 @@ public class courseInstructorGUI extends JFrame {
     if (selectedIndex >= 0) {
       tfPersonID.setText(String.valueOf(model.getValueAt(selectedIndex, 1)));
       tfCourseID.setText(String.valueOf(model.getValueAt(selectedIndex, 2)));
-      tfPersonID.setEnabled(false);
     }
   }
-}
-//  private void btnAddActionPerformed(ActionEvent e) {
-//    if (!tfCourseID.getText().trim().equals("")
-//        ) {
-//      try {
-//        int code = Integer.parseInt(tfPersonID.getText());
-//        String lastName = tfCourseID.getText();
-//
-//        Student p = new Student(code, lastName);
-//
-//        JOptionPane.showMessageDialog(null, stuBBL.addStudent(p));
-//
-//        displayList();
-//        btnResetActionPerformed(e);
-//      } catch (NumberFormatException ex) {
-//
-//      }
-//    } else {
-//      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
-//    }
-//  }
-//
-//  private void btnEditActionPerformed(ActionEvent e) {
-//    int index = table.getSelectedRow();
-//    if (index >= 0 && !tfPersonID.getText().trim().equals("") && !tfCourseID.getText().trim().equals("")
-//        && !tfFirstName.getText().trim().equals("") && !tfHireDate.getText().trim().equals("")) {
-//      Student p = new Student();
-//      p.setPersonID(Integer.parseInt(tfPersonID.getText()));
-//      p.setLastName(tfCourseID.getText());
-//      p.setFirstName(tfFirstName.getText());
-//      p.setHireDate(tfHireDate.getText());
-//      JOptionPane.showMessageDialog(null, stuBBL.editStudent(p));
-//      displayList();
-//      btnResetActionPerformed(e);
-//    } else {
-//      JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
-//    }
-//  }
-//
-//  private void btnRemoveActionPerformed(ActionEvent e) {
-//    int selectedIndex = table.getSelectedRow();
-//    if (selectedIndex >= 0 && !tfPersonID.getText().equals("")) {
-//      int code = Integer.parseInt(tfPersonID.getText());
-//      int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa sinh viên này?", "Question",
-//          JOptionPane.YES_NO_OPTION);
-//
-//      if (option == JOptionPane.YES_OPTION) {
-//        int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
-//            JOptionPane.YES_NO_OPTION);
-//        if (sure == JOptionPane.YES_OPTION) {
-//          JOptionPane.showMessageDialog(null, stuBBL.deleteStudent(code));
-//          displayList();
-//          btnResetActionPerformed(e);
-//        }
-//      }
-//    } else {
-//      JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm cần xóa");
-//    }
-//  }
+  
+ private void btnAddActionPerformed(ActionEvent e) {
+   if (!tfCourseID.getText().trim().equals("") && !tfPersonID.getText().trim().equals("")) {
+     try {
+       int codePerson = Integer.parseInt(tfPersonID.getText());
+       int codeCourse = Integer.parseInt(tfCourseID.getText());
+
+       CourseInstructor p = new CourseInstructor(codeCourse, codePerson);
+
+       JOptionPane.showMessageDialog(null, instructorBBL.addCourseInstructor(p));
+
+       displayList();
+       btnResetActionPerformed(e);
+     } catch (NumberFormatException ex) {
+
+     }
+   } else {
+     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin cần phân công khóa học");
+   }
+ }
+
+ private void btnEditActionPerformed(ActionEvent e) {
+   int index = table.getSelectedRow();
+   if (index >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("")) {
+      int codePerson = Integer.parseInt(tfPersonID.getText());
+     int codeCourse = Integer.parseInt(tfCourseID.getText());
+      CourseInstructor p = new CourseInstructor();
+     p.setPersonID(Integer.parseInt(tfPersonID.getText()));
+     p.setCourseID(Integer.parseInt(tfCourseID.getText()));
+     JOptionPane.showMessageDialog(null, instructorBBL.editCourseInstructor(p , codePerson, codeCourse ));
+     displayList();
+     btnResetActionPerformed(e);
+   } else {
+     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
+   }
+ }
+
+ private void btnRemoveActionPerformed(ActionEvent e) {
+   int selectedIndex = table.getSelectedRow();
+   if (selectedIndex >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("") ) {
+     int codePerson = Integer.parseInt(tfPersonID.getText());
+     int codeCourse = Integer.parseInt(tfCourseID.getText());
+     int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa sinh viên này?", "Question",
+         JOptionPane.YES_NO_OPTION);
+
+     if (option == JOptionPane.YES_OPTION) {
+       int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
+           JOptionPane.YES_NO_OPTION);
+       if (sure == JOptionPane.YES_OPTION) {
+         JOptionPane.showMessageDialog(null, instructorBBL.deleteCourseInstructor(codePerson, codeCourse));
+         displayList();
+         btnResetActionPerformed(e);
+       }
+     }
+   } else {
+     JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm cần xóa");
+   }
+ }
 //
 //  private void btnSearchActionPerformed(ActionEvent e) {
 //    String studentName = tfFind.getText();
@@ -302,17 +298,17 @@ public class courseInstructorGUI extends JFrame {
 //    }
 //  }
 //
-//  private void displayList() {
-//    model.setRowCount(0);
-//    studentList = stuBBL.getAllStudent();
-//    int i = 0;
-//    while (i < studentList.size()) {
-//      Student p = studentList.get(i);
-//      model.addRow(new Object[] {
-//          model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getHireDate()
-//      });
-//      i++;
-//    }
-//
-//  }
-//}
+private void displayList() {
+  model.setRowCount(0);
+  courseIntructorList = instructorBBL.getAllCourseInstructor();
+  int i = 0;
+  while (i < courseIntructorList.size()) {
+    CourseInstructor p = courseIntructorList.get(i);
+    model.addRow(new Object[] {
+        model.getRowCount() + 1, p.getPersonID(),p.getCourseID(),  p.getFirstName(), p.getLastName(), p.getTitle()
+    });
+    i++;
+  }
+
+}
+}

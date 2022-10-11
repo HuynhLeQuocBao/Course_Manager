@@ -7,14 +7,15 @@ import Base.CourseInstructor;
 public class courseInstructorDAL {
   databaseConnect dc = new databaseConnect();
 
-  public List<courseInstructorDAL> findAll() {
+  public List<CourseInstructor> findAll() {
     List<CourseInstructor> courseInstructorList = new ArrayList<CourseInstructor>();
 
     if (dc.openConnection()) {
       try {
         // query
         String sql = "select courseinstructor.PersonID, courseinstructor.CourseID, person.FirstName, person.LastName , course.Title "
-            + "from person,course, courseinstructor "
+            + "from "
+            + "person,course, courseinstructor "
             + "where person.PersonID= courseinstructor.PersonID "
             + "and "
             + "course.CourseID= courseinstructor.CourseID ";
@@ -24,9 +25,9 @@ public class courseInstructorDAL {
 
         while (resultSet.next()) {
           CourseInstructor std = new CourseInstructor(
-              resultSet.getInt("PersonID"),
-              resultSet.getString("Lastname"), resultSet.getString("Firstname"),
-              resultSet.getString("HireDate"));
+              resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),
+              resultSet.getString("FirstName"), resultSet.getString("LastName"),
+              resultSet.getString("Title"));
           courseInstructorList.add(std);
         }
       } catch (SQLException e) {
@@ -38,117 +39,113 @@ public class courseInstructorDAL {
     return courseInstructorList;
   }
 
-  public boolean insert(Student p) {
-    boolean result = false;
-    if (dc.openConnection()) {
-      try {
-        String sql = "insert into person(PersonID, Lastname, Firstname, HireDate) values (?, ?, ?, ?)";
-        PreparedStatement statement = dc.connection.prepareCall(sql);
+ public boolean insert(CourseInstructor p) {
+   boolean result = false;
+   if (dc.openConnection()) {
+     try {
+       String sql = "insert into courseinstructor( CourseID,PersonID) values ( ?, ?)";
+       PreparedStatement statement = dc.connection.prepareCall(sql);
 
-        statement.setInt(1, p.getPersonID());
-        statement.setString(2, p.getLastName());
-        statement.setString(3, p.getFirstName());
-        statement.setString(4, p.getHireDate());
+       statement.setInt(1, p.getCourseID());
+       statement.setInt(2, p.getPersonID());
+       if (statement.executeUpdate() >= 1) {
+         result = true;
+       }
+     } catch (SQLException e) {
+       System.out.println(e);
+     } finally {
+       dc.closeConnection();
+     }
+   }
+   return result;
+ }
 
-        if (statement.executeUpdate() >= 1) {
-          result = true;
-        }
-      } catch (SQLException e) {
-        System.out.println(e);
-      } finally {
-        dc.closeConnection();
-      }
-    }
-    return result;
-  }
+ public boolean update(CourseInstructor p, int personID, int courseID) {
+   boolean result = false;
+   if (dc.openConnection()) {
+     try {
+       String sql = "update courseinstructor set CourseID=?, PersonID=? where PersonID = ? and CourseID= ? ";
+       PreparedStatement statement = dc.connection.prepareCall(sql);
 
-  public boolean update(Student p) {
-    boolean result = false;
-    if (dc.openConnection()) {
-      try {
-        String sql = "update person set Lastname=?, Firstname=?, HireDate=? where PersonID = ?";
-        PreparedStatement statement = dc.connection.prepareCall(sql);
+       statement.setInt(1, p.getCourseID());
+       statement.setInt(2, p.getPersonID());
+       statement.setInt(3, personID);
+       statement.setInt(4, courseID);
 
-        statement.setString(1, p.getLastName());
-        statement.setString(2, p.getFirstName());
-        statement.setString(3, p.getHireDate());
-        statement.setInt(4, p.getPersonID());
+       if (statement.executeUpdate() >= 1) {
+         result = true;
+       }
+     } catch (SQLException e) {
+       System.out.println(e);
+     } finally {
+       dc.closeConnection();
+     }
+   }
+   return result;
+ }
 
-        if (statement.executeUpdate() >= 1) {
-          result = true;
-        }
-      } catch (SQLException e) {
-        System.out.println(e);
-      } finally {
-        dc.closeConnection();
-      }
-    }
-    return result;
-  }
+ public boolean delete(int personID, int courseID) {
+   boolean result = false;
+   if (dc.openConnection()) {
+     try {
+       String sql = "delete from courseinstructor where PersonID = ? and CourseID = ?";
+       PreparedStatement statement = dc.connection.prepareCall(sql);
 
-  public boolean delete(int id) {
-    boolean result = false;
-    if (dc.openConnection()) {
-      try {
-        String sql = "delete from person where PersonID = ?";
-        PreparedStatement statement = dc.connection.prepareCall(sql);
+       statement.setInt(1, personID);
+       statement.setInt(2, courseID);
 
-        statement.setInt(1, id);
+       if (statement.executeUpdate() >= 1) {
+         result = true;
+       }
+     } catch (SQLException e) {
+       System.out.println(e);
+     } finally {
+       dc.closeConnection();
+     }
+   }
+   return result;
+ }
 
-        if (statement.executeUpdate() >= 1) {
-          result = true;
-        }
-      } catch (SQLException e) {
-        System.out.println(e);
-      } finally {
-        dc.closeConnection();
-      }
-    }
-    return result;
-  }
+ public List<CourseInstructor> findByName(String keyword) {
+   List<CourseInstructor> courseInstructorList = new ArrayList<CourseInstructor>();
 
-  public List<Student> findByUserName(String studentName) {
-    List<Student> studentList = new ArrayList<Student>();
+   if (dc.openConnection()) {
+     try {
+       // query
+      //  String sql = "select * from person where concat(Lastname, Firstname) like ? and EnrolLmentDate IS NULL";
+      String sqlSearchPersonName= "where person.PersonID= courseinstructor.PersonID"
+      +"and"
+      +"course.CourseID= courseinstructor.CourseID "
+      +"and" 
+      +"concat(person.FirstName, person.LastName) like ? or course.Title like ?";
+      String sqlSearchCourseName= "where person.PersonID= courseinstructor.PersonID"
+      +"and"
+      +"course.CourseID= courseinstructor.CourseID "
+      +"and" 
+      +"course.Title like ?";
+       String sql = "select courseinstructor.PersonID, courseinstructor.CourseID, person.FirstName, person.LastName , course.Title "
+       + "from "
+       + "person,course, courseinstructor "
+       + sqlSearchPersonName + "or"+ sqlSearchCourseName;
 
-    if (dc.openConnection()) {
-      try {
-        // query
-        String sql = "select * from person where concat(Lastname, Firstname) like ? and EnrolLmentDate IS NULL";
-        PreparedStatement statement = dc.connection.prepareCall(sql);
-        statement.setString(1, "%" + studentName + "%");
+       PreparedStatement statement = dc.connection.prepareCall(sql);
+       statement.setString(1, "%" + keyword + "%");
 
-        ResultSet resultSet = statement.executeQuery();
+       ResultSet resultSet = statement.executeQuery();
 
-        while (resultSet.next()) {
-          Student std = new Student(
-              resultSet.getInt("PersonID"),
-              resultSet.getString("Lastname"), resultSet.getString("Firstname"),
-              resultSet.getString("HireDate"));
-          studentList.add(std);
-        }
-      } catch (SQLException e) {
-        System.out.println(e);
-      } finally {
-        dc.closeConnection();
-      }
-    }
-    return studentList;
-  }
-
-  public boolean hasPersonID(int personID) {
-    boolean result = false;
-    if (dc.openConnection()) {
-      try {
-        String sql = "select * from person where PersonID=" + personID;
-        Statement statement = dc.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-        result = resultSet.next();
-      } catch (SQLException e) {
-        System.out.println(e);
-      } finally {
-        dc.closeConnection();
-      }
-    }
-    return result;
-  }
+       while (resultSet.next()) {
+        CourseInstructor std = new CourseInstructor(
+          resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),
+          resultSet.getString("FirstName"), resultSet.getString("LastName"),
+          resultSet.getString("Title"));
+      courseInstructorList.add(std);
+       }
+     } catch (SQLException e) {
+       System.out.println(e);
+     } finally {
+       dc.closeConnection();
+     }
+   }
+   return courseInstructorList;
+ }
 }

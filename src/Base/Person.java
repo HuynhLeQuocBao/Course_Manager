@@ -13,6 +13,10 @@ public class Person {
     this.lastName = lastName;
     this.firstName = firstName;
   }
+  public Person( String lastName, String firstName) {
+    this.lastName = lastName;
+    this.firstName = firstName;
+  }
 
   public int getPersonID() {
     return personID;
