@@ -1,23 +1,23 @@
 package Base;
 
-public class Teacher extends Person {
-  private String enrollmentDate;
+public class Student extends Person {
+  private String hireDate;
 
-  public Teacher() {
+  public Student() {
 
   }
 
-  public Teacher(int personID, String lastName, String firstName, String enrollmentDate) {
+  public Student(int personID, String lastName, String firstName, String hireDate) {
     super(personID, lastName, firstName);
-    this.enrollmentDate = enrollmentDate;
+    this.hireDate = hireDate;
   }
 
-  public String getEnrollmentDate() {
-    return enrollmentDate;
+  public String getHireDate() {
+    return hireDate;
   }
 
-  public void setEnrollmentDate(String enrollmentDate) {
-    this.enrollmentDate = enrollmentDate;
+  public void setHireDate(String hireDate) {
+    this.hireDate = hireDate;
   }
 
 }

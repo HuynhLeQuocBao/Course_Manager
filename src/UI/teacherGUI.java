@@ -31,7 +31,7 @@ public class teacherGUI extends JFrame {
   private JPanel contentPane;
   private JTextField tfLastName;
   private JTextField tfFirstName;
-  private JTextField tfEnrollmentDate;
+  private JTextField tfHireDate;
   private JTextField tfFind;
   DefaultTableModel model = new DefaultTableModel();
   private JTable table;
@@ -86,16 +86,16 @@ public class teacherGUI extends JFrame {
     panel.add(tfFirstName);
     tfFirstName.setColumns(10);
 
-    JLabel lbEnrollmentDate = new JLabel("EnrollmentDate");
-    lbEnrollmentDate.setFont(new Font("SansSerif", Font.BOLD, 12));
-    lbEnrollmentDate.setForeground(new Color(0, 0, 0));
-    lbEnrollmentDate.setBounds(25, 314, 91, 28);
-    panel.add(lbEnrollmentDate);
+    JLabel lbHireDate = new JLabel("HireDate");
+    lbHireDate.setFont(new Font("SansSerif", Font.BOLD, 12));
+    lbHireDate.setForeground(new Color(0, 0, 0));
+    lbHireDate.setBounds(25, 314, 91, 28);
+    panel.add(lbHireDate);
 
-    tfEnrollmentDate = new JTextField();
-    tfEnrollmentDate.setBounds(126, 314, 186, 28);
-    panel.add(tfEnrollmentDate);
-    tfEnrollmentDate.setColumns(10);
+    tfHireDate = new JTextField();
+    tfHireDate.setBounds(126, 314, 186, 28);
+    panel.add(tfHireDate);
+    tfHireDate.setColumns(10);
 
     JButton btnEdit = new JButton("Sửa");
     btnEdit.addActionListener(new ActionListener() {
@@ -159,7 +159,7 @@ public class teacherGUI extends JFrame {
     model.addColumn("PersonID");
     model.addColumn("Lastname");
     model.addColumn("Firstname");
-    model.addColumn("EnrollmentDate");
+    model.addColumn("HireDate");
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -236,7 +236,7 @@ public class teacherGUI extends JFrame {
     tfCode.setText("");
     tfLastName.setText("");
     tfFirstName.setText("");
-    tfEnrollmentDate.setText("");
+    tfHireDate.setText("");
     tfCode.setEnabled(true);
   }
 
@@ -246,21 +246,21 @@ public class teacherGUI extends JFrame {
       tfCode.setText(String.valueOf(model.getValueAt(selectedIndex, 1)));
       tfLastName.setText(String.valueOf(model.getValueAt(selectedIndex, 2)));
       tfFirstName.setText(String.valueOf(model.getValueAt(selectedIndex, 3)));
-      tfEnrollmentDate.setText(String.valueOf(model.getValueAt(selectedIndex, 4)));
+      tfHireDate.setText(String.valueOf(model.getValueAt(selectedIndex, 4)));
       tfCode.setEnabled(false);
     }
   }
 
   private void btnAddActionPerformed(ActionEvent e) {
     if (!tfLastName.getText().trim().equals("")
-        && !tfFirstName.getText().trim().equals("") && !tfEnrollmentDate.getText().trim().equals("")) {
+        && !tfFirstName.getText().trim().equals("") && !tfHireDate.getText().trim().equals("")) {
       try {
         int code = Integer.parseInt(tfCode.getText());
         String lastName = tfLastName.getText();
         String firstName = tfFirstName.getText();
-        String enrollmentDate = tfEnrollmentDate.getText();
+        String HireDate = tfHireDate.getText();
 
-        Teacher p = new Teacher(code, lastName, firstName, enrollmentDate);
+        Teacher p = new Teacher(code, lastName, firstName, HireDate);
 
         JOptionPane.showMessageDialog(null, teaBLL.addTeacher(p));
 
@@ -277,12 +277,12 @@ public class teacherGUI extends JFrame {
   private void btnEditActionPerformed(ActionEvent e) {
     int index = table.getSelectedRow();
     if (index >= 0 && !tfCode.getText().trim().equals("") && !tfLastName.getText().trim().equals("")
-        && !tfFirstName.getText().trim().equals("") && !tfEnrollmentDate.getText().trim().equals("")) {
+        && !tfFirstName.getText().trim().equals("") && !tfHireDate.getText().trim().equals("")) {
       Teacher p = new Teacher();
       p.setPersonID(Integer.parseInt(tfCode.getText()));
       p.setLastName(tfLastName.getText());
       p.setFirstName(tfFirstName.getText());
-      p.setEnrollmentDate(tfEnrollmentDate.getText());
+      p.setHireDate(tfHireDate.getText());
       JOptionPane.showMessageDialog(null, teaBLL.editTeacher(p));
       displayList();
       btnResetActionPerformed(e);
@@ -325,7 +325,7 @@ public class teacherGUI extends JFrame {
         while (i < teacherList.size()) {
           Teacher p = teacherList.get(i);
           model.addRow(new Object[] {
-              model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getEnrollmentDate()
+              model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getHireDate()
           });
           i++;
         }
@@ -343,7 +343,7 @@ public class teacherGUI extends JFrame {
     while (i < teacherList.size()) {
       Teacher p = teacherList.get(i);
       model.addRow(new Object[] {
-          model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getEnrollmentDate()
+          model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getHireDate()
       });
       i++;
     }
