@@ -69,7 +69,7 @@ public class courseGUI extends JFrame {
      * @return
      */
     public void initComponent() {
-        setTitle("Quáº£n lÃ­ sáº£n pháº©m");
+        setTitle("QuÃ¡ÂºÂ£n lÃƒÂ­ sÃ¡ÂºÂ£n phÃ¡ÂºÂ©m");
         setSize(1366, 740);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane = new JPanel();
@@ -108,7 +108,7 @@ public class courseGUI extends JFrame {
         lbCourseType.setBounds(25, 208, 91, 28);
         panel.add(lbCourseType);
 
-        JButton btnEdit = new JButton("Sửa");
+        JButton btnEdit = new JButton("Sá»­a");
         btnEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
@@ -116,7 +116,7 @@ public class courseGUI extends JFrame {
         btnEdit.setBounds(143, 508, 69, 28);
         panel.add(btnEdit);
 
-        JButton btnAdd = new JButton("Thêm");
+        JButton btnAdd = new JButton("ThÃªm");
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,7 +127,7 @@ public class courseGUI extends JFrame {
         btnAdd.setBounds(259, 508, 69, 28);
         panel.add(btnAdd);
 
-        JButton btnRemove = new JButton("Xóa");
+        JButton btnRemove = new JButton("XÃ³a");
         btnRemove.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -284,13 +284,13 @@ public class courseGUI extends JFrame {
         contentPane.add(panel1);
         panel1.setLayout(null);
 
-        JLabel lbTitle = new JLabel("Danh Sách Khóa Học");
+        JLabel lbTitle = new JLabel("Danh SÃ¡ch KhÃ³a Há»�c");
         lbTitle.setForeground(Color.WHITE);
         lbTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
         lbTitle.setBounds(301, 6, 387, 36);
         panel1.add(lbTitle);
 
-        JButton btnSearch = new JButton("Tìm kiếm");
+        JButton btnSearch = new JButton("TÃ¬m kiáº¿m");
         btnSearch.setBounds(1249, 6, 90, 38);
         panel1.add(btnSearch);
         tfSearch = new JTextField();
@@ -298,7 +298,7 @@ public class courseGUI extends JFrame {
         panel1.add(tfSearch);
         tfSearch.setColumns(10);
 
-        JButton btnReturn = new JButton("Trở lại");
+        JButton btnReturn = new JButton("Trá»Ÿ láº¡i");
         btnReturn.setBounds(22, 13, 90, 38);
         panel1.add(btnReturn);
 
@@ -347,7 +347,7 @@ public class courseGUI extends JFrame {
             }
         });
 
-        JLabel lbSearch = new JLabel("Tìm kiếm theo tên khóa học");
+        JLabel lbSearch = new JLabel("TÃ¬m kiáº¿m theo tÃªn khÃ³a há»�c");
         lbSearch.setBounds(1023, 41, 216, 29);
         panel1.add(lbSearch);
         lbSearch.setForeground(Color.WHITE);
@@ -379,7 +379,7 @@ public class courseGUI extends JFrame {
         btnReturn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 f.setVisible(false);
-                adminGUI p = new adminGUI();
+                managerGUI p = new managerGUI();
                 p.f.setVisible(true);
             }
         });

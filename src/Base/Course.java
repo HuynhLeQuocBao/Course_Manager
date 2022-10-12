@@ -1,6 +1,6 @@
 package Base;
 
-public class Course {
+public class Course extends Person {
     private int courseID;
     private String title;
     private String credits;
@@ -15,7 +15,10 @@ public class Course {
         this.credits = credits;
         this.departmentID = departmentID;
     }
-
+    public Course( String title,String firstName, String lastName) {
+      super(firstName, lastName);
+      this.title = title;
+    }
     public int getCourseID() {
         return courseID;
     }

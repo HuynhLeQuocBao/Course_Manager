@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import BLL.courseInstructorBLL;
 import BLL.TeacherBLL;
+import BLL.courseBLL;
 import java.awt.Panel;
 import Base.CourseInstructor;
 import javax.swing.JComboBox;
@@ -31,6 +32,8 @@ public class courseInstructorGUI extends JFrame {
   courseInstructorBLL instructorBBL = new courseInstructorBLL();
   TeacherBLL teaBLL = new TeacherBLL();
   List<String> teacherName = teaBLL.getTeacherName() ;
+  courseBLL courseBLL = new courseBLL();
+  List<String> courseList = courseBLL.getAllCourse() ;
   public JFrame f = new JFrame();
   private JPanel contentPane;
   private JTextField tfFind;
@@ -112,7 +115,7 @@ public class courseInstructorGUI extends JFrame {
     cbPersonID.setBounds(126, 48, 186, 28);
     panel.add(cbPersonID);
     
-    JComboBox cbCourseID = new JComboBox();
+    JComboBox cbCourseID = new JComboBox(courseList.toArray());
     cbCourseID.setBounds(126, 134, 186, 28);
     panel.add(cbCourseID);
     JScrollPane scrollPane = new JScrollPane();

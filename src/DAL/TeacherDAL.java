@@ -39,13 +39,13 @@ public class TeacherDAL {
     if (dc.openConnection()) {
       try {
         // query
-        String sql = "select concat('-',FirstName, ' ', LastName), PersonID from person where EnrollmentDate IS NULL";
+        String sql = "select FirstName, LastName, PersonID from person where EnrollmentDate IS NULL";
         Statement statement = dc.connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-             String std=resultSet.getInt("PersonID")+resultSet.getString("concat('-',FirstName, ' ', LastName)");
+             String std=resultSet.getInt("PersonID")+"_"+resultSet.getString("FirstName")+" "+resultSet.getString("LastName");
               teacherNameList.add(std);
         }
       } catch (SQLException e) {

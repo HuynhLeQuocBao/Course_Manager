@@ -20,6 +20,10 @@ public class courseBLL {
         return courseDAL.findAllOnlineCourse();
     }
 
+    public List<String> getAllCourse(){
+      return courseDAL.getAllCourse();
+    } 
+    
     public String addCourseOnsite(OnsiteCourse course) {
         if (courseDAL.insertOnsiteCourse(course)) {
             return "Add Course successfully";

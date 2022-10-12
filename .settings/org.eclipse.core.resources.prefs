@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/BLL/StudentBLL.java=UTF-8
 encoding//src/BLL/courseInstructorBLL.java=UTF-8
+encoding//src/UI/courseGUI.java=UTF-8
 encoding//src/UI/courseInstructorGUI.java=UTF-8
 encoding//src/UI/managerGUI.java=UTF-8
 encoding//src/UI/studentGUI.java=UTF-8

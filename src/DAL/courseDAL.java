@@ -68,6 +68,30 @@ public class courseDAL {
         return courseOnlineList;
     }
 
+    public List<String> getAllCourse() {
+      List<String> courseList = new ArrayList<String>();
+
+      if (dc.openConnection()) {
+          try {
+              // query
+              String sql = "select CourseID, Title from course";
+              Statement statement = dc.connection.createStatement();
+
+              ResultSet resultSet = statement.executeQuery(sql);
+
+              while (resultSet.next()) {
+                  String courseItem = resultSet.getString("CourseID") + "_" + resultSet.getString("Title");
+                  courseList.add(courseItem);
+              }
+          } catch (SQLException e) {
+              System.out.println(e);
+          } finally {
+              dc.closeConnection();
+          }
+      }
+      return courseList;
+  }
+    
     public boolean insertOnsiteCourse(OnsiteCourse onsiteCourse) {
         boolean result = false;
         if (dc.openConnection()) {
