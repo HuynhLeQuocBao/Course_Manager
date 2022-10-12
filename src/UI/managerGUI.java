@@ -71,6 +71,13 @@ public class managerGUI extends JFrame {
             p.f.setVisible(true);
           }
         });
+        btnCourse.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            f.setVisible(false);
+            courseGUI p = new courseGUI();
+            p.f.setVisible(true);
+          }
+        });
         btnRole.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             f.setVisible(false);
@@ -78,6 +85,7 @@ public class managerGUI extends JFrame {
             p.f.setVisible(true);
           }
         });
+        
     Panel panel1 = new Panel();
     panel1.setBackground(new Color(50, 205, 50));
     panel1.setBounds(0, 0, 680, 62);
