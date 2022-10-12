@@ -26,17 +26,15 @@ import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import BLL.courseBLL;
-import BLL.departmentBLL;
 import Base.*;
 import javax.swing.ImageIcon;
 import java.awt.Panel;
 
 public class courseGUI extends JFrame {
     courseBLL courseBLL = new courseBLL();
-    departmentBLL departmentBLL = new departmentBLL();
     String[] courseTypeList = { "Course Onsite", "Course Online" };
     String[] departmentListForCB = {};
-    List<String> departmentList = departmentBLL.getAllDepartment();
+    List<String> departmentList = courseBLL.getAllDepartment();
     List<OnsiteCourse> courseOnsiteList = new ArrayList<OnsiteCourse>();
     List<OnlineCourse> courseOnlineList = new ArrayList<OnlineCourse>();
     public JFrame f = new JFrame();
@@ -249,6 +247,7 @@ public class courseGUI extends JFrame {
         model.addColumn("No");
         model.addColumn("Title");
         model.addColumn("Credits");
+        model.addColumn("DepartmentID");
         model.addColumn("Department");
         model.addColumn("Location");
         model.addColumn("Days");
@@ -260,6 +259,7 @@ public class courseGUI extends JFrame {
         modelOnline.addColumn("No");
         modelOnline.addColumn("Title");
         modelOnline.addColumn("Credits");
+        modelOnline.addColumn("DepartmentID");
         modelOnline.addColumn("Department");
         modelOnline.addColumn("Url");
 
@@ -404,12 +404,12 @@ public class courseGUI extends JFrame {
 
             cbDepartmentID
                     .setSelectedItem(model.getValueAt(selectedIndex, 3) + "_" +
-                            model.getValueAt(selectedIndex, 0));
+                            model.getValueAt(selectedIndex, 4));
 
             cbCourseType.setSelectedItem(cbFilter.getSelectedItem().toString());
-            tfLocation.setText(String.valueOf(model.getValueAt(selectedIndex, 4)));
-            tfDay.setText(String.valueOf(model.getValueAt(selectedIndex, 5)));
-            tfTime.setText(String.valueOf(model.getValueAt(selectedIndex, 6)));
+            tfLocation.setText(String.valueOf(model.getValueAt(selectedIndex, 5)));
+            tfDay.setText(String.valueOf(model.getValueAt(selectedIndex, 6)));
+            tfTime.setText(String.valueOf(model.getValueAt(selectedIndex, 7)));
         }
     }
 
@@ -422,10 +422,10 @@ public class courseGUI extends JFrame {
         cbDepartmentID
                 .setSelectedItem(
                         modelOnline.getValueAt(selectedIndex, 3) + "_" +
-                                model.getValueAt(selectedIndex, 0));
+                                model.getValueAt(selectedIndex, 4));
 
         cbCourseType.setSelectedItem(cbFilter.getSelectedItem().toString());
-        tfUrl.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 4)));
+        tfUrl.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 5)));
     }
 
     // add course
@@ -478,9 +478,10 @@ public class courseGUI extends JFrame {
                 model.setValueAt(course.getTitle(), i, 1);
                 model.setValueAt(course.getCredits(), i, 2);
                 model.setValueAt(course.getDepartmentID(), i, 3);
-                model.setValueAt(course.getLocation(), i, 4);
-                model.setValueAt(course.getDate(), i, 5);
-                model.setValueAt(course.getTime(), i, 6);
+                model.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
+                model.setValueAt(course.getLocation(), i, 5);
+                model.setValueAt(course.getDate(), i, 6);
+                model.setValueAt(course.getTime(), i, 7);
                 i++;
             }
         } else {
@@ -493,7 +494,8 @@ public class courseGUI extends JFrame {
                 modelOnline.setValueAt(course.getTitle(), i, 1);
                 modelOnline.setValueAt(course.getCredits(), i, 2);
                 modelOnline.setValueAt(course.getDepartmentID(), i, 3);
-                modelOnline.setValueAt(course.getUrl(), i, 4);
+                model.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
+                modelOnline.setValueAt(course.getUrl(), i, 5);
                 i++;
             }
         }
