@@ -10,7 +10,9 @@ public class TeacherBLL {
   public List<Teacher> getAllTeacher() {
     return teaDAL.findAll();
   }
-
+  public List<String> getTeacherName(){
+    return teaDAL.getTeacherNameAndID();
+  } 
   public String addTeacher(Teacher p) {
     if (teaDAL.hasPersonID(p.getPersonID())) {
       return "Mã giáo viên bị trùng. Vui lòng nhập lại";

@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import BLL.courseInstructorBLL;
+import BLL.TeacherBLL;
 import java.awt.Panel;
 import Base.CourseInstructor;
 import javax.swing.JComboBox;
@@ -28,6 +29,8 @@ public class courseInstructorGUI extends JFrame {
 
   List<CourseInstructor> courseIntructorList = new ArrayList<CourseInstructor>();
   courseInstructorBLL instructorBBL = new courseInstructorBLL();
+  TeacherBLL teaBLL = new TeacherBLL();
+  List<String> teacherName = teaBLL.getTeacherName() ;
   public JFrame f = new JFrame();
   private JPanel contentPane;
   private JTextField tfFind;
@@ -61,7 +64,7 @@ public class courseInstructorGUI extends JFrame {
     contentPane.add(panel);
     panel.setLayout(null);
     f.setResizable(false);
-    JLabel lbCourseID = new JLabel("CourseID");
+    JLabel lbCourseID = new JLabel("Course Name");
     lbCourseID.setFont(new Font("SansSerif", Font.BOLD, 12));
     lbCourseID.setForeground(new Color(0, 0, 0));
     lbCourseID.setBounds(25, 134, 91, 28);
@@ -99,13 +102,13 @@ public class courseInstructorGUI extends JFrame {
     btnReset.setBounds(89, 545, 167, 38);
     panel.add(btnReset);
 
-    JLabel lbPersonID = new JLabel("PersonID");
+    JLabel lbPersonID = new JLabel("Person Name");
     lbPersonID.setForeground(Color.BLACK);
     lbPersonID.setFont(new Font("SansSerif", Font.BOLD, 12));
     lbPersonID.setBounds(25, 46, 91, 28);
     panel.add(lbPersonID);
     
-    JComboBox cbPersonID = new JComboBox();
+    JComboBox cbPersonID = new JComboBox(teacherName.toArray());
     cbPersonID.setBounds(126, 48, 186, 28);
     panel.add(cbPersonID);
     
@@ -201,7 +204,7 @@ public class courseInstructorGUI extends JFrame {
   }
 
   private void btnResetActionPerformed(ActionEvent e) {
-    tfPersonID.setText("");
+    cbPersonID.setSelectetIndex(0);
     tfCourseID.setText("");
   }
 

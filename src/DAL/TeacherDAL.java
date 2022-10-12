@@ -33,7 +33,29 @@ public class TeacherDAL {
     }
     return teacherList;
   }
+  public List<String> getTeacherNameAndID() {
+    List<String> teacherNameList = new ArrayList<String>();
 
+    if (dc.openConnection()) {
+      try {
+        // query
+        String sql = "select concat('-',FirstName, ' ', LastName), PersonID from person where EnrollmentDate IS NULL";
+        Statement statement = dc.connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+             String std=resultSet.getInt("PersonID")+resultSet.getString("concat('-',FirstName, ' ', LastName)");
+              teacherNameList.add(std);
+        }
+      } catch (SQLException e) {
+        System.out.println(e);
+      } finally {
+        dc.closeConnection();
+      }
+    }
+    return teacherNameList;
+  }
   public boolean insert(Teacher p) {
     boolean result = false;
     if (dc.openConnection()) {
