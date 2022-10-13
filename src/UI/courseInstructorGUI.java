@@ -41,7 +41,7 @@ public class courseInstructorGUI extends JFrame {
   DefaultTableModel model = new DefaultTableModel();
   private JTable table;
   private JComboBox cbPerson, cbCourse;
-  private int checkClick, cbPersonIdValueClick, cbCourseIdValueClick;
+  private int cbPersonIdValueClick, cbCourseIdValueClick;
   
   public courseInstructorGUI() {
     initComponent();
@@ -212,11 +212,11 @@ public class courseInstructorGUI extends JFrame {
   private void btnResetActionPerformed(ActionEvent e) {
     cbPerson.setSelectedIndex(0);
     cbCourse.setSelectedIndex(0);
-    checkClick=0;
+    tfFind.setText("");
+    displayList();
   }
 
   private void jTableMouseClicked(MouseEvent e) {
-    checkClick=1;
     int selectedIndex = table.getSelectedRow();
     if (selectedIndex >= 0) {
       cbPerson
