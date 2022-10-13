@@ -15,8 +15,8 @@ public class Course extends Person {
         this.credits = credits;
         this.departmentID = departmentID;
     }
-    public Course( String title,String firstName, String lastName) {
-      super(firstName, lastName);
+    public Course(String firstName , String lastName, String title) {
+      super(firstName,lastName);
       this.title = title;
     }
     public int getCourseID() {

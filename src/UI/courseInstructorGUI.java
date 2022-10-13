@@ -41,7 +41,8 @@ public class courseInstructorGUI extends JFrame {
   DefaultTableModel model = new DefaultTableModel();
   private JTable table;
   private JComboBox cbPerson, cbCourse;
-
+  private int checkClick, cbPersonIdValueClick, cbCourseIdValueClick;
+  
   public courseInstructorGUI() {
     initComponent();
    displayList();
@@ -174,7 +175,7 @@ public class courseInstructorGUI extends JFrame {
     panel1.add(btnReturn);
     btnSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-//        btnSearchActionPerformed(e);
+       btnSearchActionPerformed(e);
       }
     });
     btnEdit.addActionListener(new ActionListener() {
@@ -211,98 +212,112 @@ public class courseInstructorGUI extends JFrame {
   private void btnResetActionPerformed(ActionEvent e) {
     cbPerson.setSelectedIndex(0);
     cbCourse.setSelectedIndex(0);
-
+    checkClick=0;
   }
 
   private void jTableMouseClicked(MouseEvent e) {
+    checkClick=1;
     int selectedIndex = table.getSelectedRow();
     if (selectedIndex >= 0) {
-      cbPerson.setSelectedItem(String.valueOf(model.getValueAt(selectedIndex, 1)));
-      cbCourse.setSelectedItem(String.valueOf(model.getValueAt(selectedIndex, 2)));
+      cbPerson
+      .setSelectedItem(
+          model.getValueAt(selectedIndex, 1)+ "_"+model.getValueAt(selectedIndex, 3)+" "+model.getValueAt(selectedIndex, 4)
+      );
+      cbCourse
+      .setSelectedItem(
+        model.getValueAt(selectedIndex, 2) + "_" +model.getValueAt(selectedIndex, 5)
+      );
+      //get personID and courseID when click 
+      cbPersonIdValueClick= (int) model.getValueAt(selectedIndex, 1);
+      cbCourseIdValueClick= (int) model.getValueAt(selectedIndex, 2);
     }
   }
-// private void btnAddActionPerformed(ActionEvent e) {
-//   if (!tfCourseID.getText().trim().equals("") && !tfPersonID.getText().trim().equals("")) {
-//     try {
-//       int codePerson = Integer.parseInt(tfPersonID.getText());
-//       int codeCourse = Integer.parseInt(tfCourseID.getText());
-//
-//       CourseInstructor p = new CourseInstructor(codeCourse, codePerson);
-//
-//       JOptionPane.showMessageDialog(null, instructorBBL.addCourseInstructor(p));
-//
-//       displayList();
-//       btnResetActionPerformed(e);
-//     } catch (NumberFormatException ex) {
-//
-//     }
-//   } else {
-//     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin cần phân công khóa học");
-//   }
-// }
-//
-// private void btnEditActionPerformed(ActionEvent e) {
-//   int index = table.getSelectedRow();
-//   if (index >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("")) {
-//      int codePerson = Integer.parseInt(tfPersonID.getText());
-//     int codeCourse = Integer.parseInt(tfCourseID.getText());
-//      CourseInstructor p = new CourseInstructor();
-//     p.setPersonID(Integer.parseInt(tfPersonID.getText()));
-//     p.setCourseID(Integer.parseInt(tfCourseID.getText()));
-//     JOptionPane.showMessageDialog(null, instructorBBL.editCourseInstructor(p , codePerson, codeCourse ));
-//     displayList();
-//     btnResetActionPerformed(e);
-//   } else {
-//     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
-//   }
-// }
-//
-// private void btnRemoveActionPerformed(ActionEvent e) {
-//   int selectedIndex = table.getSelectedRow();
-//   if (selectedIndex >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("") ) {
-//     int codePerson = Integer.parseInt(tfPersonID.getText());
-//     int codeCourse = Integer.parseInt(tfCourseID.getText());
-//     int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa sinh viên này?", "Question",
-//         JOptionPane.YES_NO_OPTION);
-//
-//     if (option == JOptionPane.YES_OPTION) {
-//       int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
-//           JOptionPane.YES_NO_OPTION);
-//       if (sure == JOptionPane.YES_OPTION) {
-//         JOptionPane.showMessageDialog(null, instructorBBL.deleteCourseInstructor(codePerson, codeCourse));
-//         displayList();
-//         btnResetActionPerformed(e);
-//       }
-//     }
-//   } else {
-//     JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm cần xóa");
-//   }
-// }
-//
-//  private void btnSearchActionPerformed(ActionEvent e) {
-//    String studentName = tfFind.getText();
-//    if (studentName != null && studentName.length() > 0) {
-//      studentList = stuBBL.searchStudentByName(studentName);
-//      if (studentList.size() == 0) {
-//        JOptionPane.showMessageDialog(null, "Không có sinh viên cần tìm");
-//        displayList();
-//      } else {
-//        model.setRowCount(0);
-//        int i = 0;
-//        while (i < studentList.size()) {
-//          Student p = studentList.get(i);
-//          model.addRow(new Object[] {
-//              model.getRowCount() + 1, p.getPersonID(), p.getLastName(), p.getFirstName(), p.getHireDate()
-//          });
-//          i++;
-//        }
-//      }
-//
-//    } else {
-//      JOptionPane.showMessageDialog(null, "Vui lòng nhập tên sinh viên cần tìm");
-//    }
-//  }
-//
+ private void btnAddActionPerformed(ActionEvent e) {
+   int personID = Integer.parseInt(cbPerson.getSelectedItem().toString().split("_")[0]);
+   int courseID = Integer.parseInt(cbCourse.getSelectedItem().toString().split("_")[0]);
+   if (cbPersonIdValueClick!=personID||cbCourseIdValueClick!=courseID) {
+     try {
+
+       CourseInstructor p = new CourseInstructor(courseID, personID);
+
+       JOptionPane.showMessageDialog(null, instructorBBL.addCourseInstructor(p));
+
+       displayList();
+       btnResetActionPerformed(e);
+     } catch (NumberFormatException ex) {
+
+     }
+   } else {
+     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin cần phân công khóa học");
+   }
+ }
+
+ private void btnEditActionPerformed(ActionEvent e) {
+   int selectedIndex = table.getSelectedRow();
+   int personID = Integer.parseInt(cbPerson.getSelectedItem().toString().split("_")[0]);
+   int courseID = Integer.parseInt(cbCourse.getSelectedItem().toString().split("_")[0]);
+   System.out.println(personID);
+   System.out.println(courseID);
+
+   if (selectedIndex>=0 && (cbPersonIdValueClick!=personID||cbCourseIdValueClick!=courseID)) {
+      
+      CourseInstructor p = new CourseInstructor(courseID,personID);
+     JOptionPane.showMessageDialog(null, instructorBBL.editCourseInstructor(p , cbPersonIdValueClick, cbCourseIdValueClick ));
+     displayList();
+     btnResetActionPerformed(e);
+   } else {
+     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
+   }
+ }
+
+ private void btnRemoveActionPerformed(ActionEvent e) {
+   int selectedIndex = table.getSelectedRow();
+   int personID = Integer.parseInt(cbPerson.getSelectedItem().toString().split("_")[0]);
+   int courseID = Integer.parseInt(cbCourse.getSelectedItem().toString().split("_")[0]);
+   if (selectedIndex>=0) {
+     int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa phân công này?", "Question",
+         JOptionPane.YES_NO_OPTION);
+
+     if (option == JOptionPane.YES_OPTION) {
+       int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
+           JOptionPane.YES_NO_OPTION);
+       if (sure == JOptionPane.YES_OPTION) {
+         JOptionPane.showMessageDialog(null, instructorBBL.deleteCourseInstructor(personID, courseID));
+         displayList();
+         btnResetActionPerformed(e);
+       }
+     }
+   } else {
+     JOptionPane.showMessageDialog(null, "Vui lòng chọn phân công cần xóa");
+   }
+ }
+
+  private void btnSearchActionPerformed(ActionEvent e) {
+    String keyword = tfFind.getText();
+    System.out.println(keyword);
+    if (keyword != null && keyword.length() > 0) {
+      courseIntructorList = instructorBBL.searchCourseInstructor(keyword);
+      System.out.println("chuoi"+courseIntructorList);
+      if (courseIntructorList.size() == 0) {
+        JOptionPane.showMessageDialog(null, "Không có khóa học cần tìm");
+        displayList();
+      } else {
+        model.setRowCount(0);
+        int i = 0;
+        while (i < courseIntructorList.size()) {
+          CourseInstructor p = courseIntructorList.get(i);
+          model.addRow(new Object[] {
+            model.getRowCount() + 1, p.getPersonID(), p.getCourseID(), p.getFirstName(), p.getLastName(), p.getTitle()
+          });
+          i++;
+        }
+      }
+
+    } else {
+      JOptionPane.showMessageDialog(null, "Vui lòng nhập tên giảng viên hoặc tên khóa học cần tìm");
+    }
+  }
+
 private void displayList() {
   model.setRowCount(0);
   courseIntructorList = instructorBBL.getAllCourseInstructor();
@@ -310,7 +325,7 @@ private void displayList() {
   while (i < courseIntructorList.size()) {
     CourseInstructor p = courseIntructorList.get(i);
     model.addRow(new Object[] {
-        model.getRowCount() + 1, p.getPersonID(),p.getCourseID(),  p.getFirstName(), p.getLastName(), p.getTitle()
+        model.getRowCount() + 1, p.getPersonID(), p.getCourseID(), p.getFirstName(), p.getLastName(), p.getTitle()
     });
     i++;
   }

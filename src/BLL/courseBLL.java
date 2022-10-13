@@ -23,20 +23,13 @@ public class courseBLL {
 
     public List<String> getAllCourse(){
         return courseDAL.getAllCourse();
-      } 
+      }
 
-    public String addCourseOnsite(OnsiteCourse course) {
-        if (courseDAL.insertOnsiteCourse(course)) {
-            return "Add Course Onsite successfully";
+    public String addCourse(String courseType, OnsiteCourse onsiteCourse, OnlineCourse onlineCourse) {
+        if (courseDAL.insertCourse(courseType, onsiteCourse, onlineCourse)) {
+            return "Add Course successfully";
         }
-        return "Add Course Onsite failed";
-    }
-
-    public String addCourseOnline(OnlineCourse course) {
-        if (courseDAL.insertOnlineCourse(course)) {
-            return "Add Course Online successfully";
-        }
-        return "Add Course Online failed";
+        return "Add Course failed";
     }
 
     public List<String> getAllDepartment() {

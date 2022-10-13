@@ -13,7 +13,7 @@ public class courseInstructorDAL {
     if (dc.openConnection()) {
       try {
         // query
-        String sql = "select courseinstructor.PersonID, courseinstructor.CourseID, person.FirstName, person.LastName , course.Title "
+        String sql = "select courseinstructor.PersonID, courseinstructor.CourseID,  person.FirstName ,person.LastName, course.Title "
             + "from "
             + "person,course, courseinstructor "
             + "where person.PersonID= courseinstructor.PersonID "
@@ -25,9 +25,7 @@ public class courseInstructorDAL {
 
         while (resultSet.next()) {
           CourseInstructor std = new CourseInstructor(
-              resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),
-              resultSet.getString("FirstName"), resultSet.getString("LastName"),
-              resultSet.getString("Title"));
+              resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),  resultSet.getString("FirstName"), resultSet.getString("LastName"), resultSet.getString("Title"));
           courseInstructorList.add(std);
         }
       } catch (SQLException e) {
@@ -107,33 +105,30 @@ public class courseInstructorDAL {
  }
 
  public List<CourseInstructor> findByName(String keyword) {
+  
    List<CourseInstructor> courseInstructorList = new ArrayList<CourseInstructor>();
-
+  System.out.println("dal"+keyword);
    if (dc.openConnection()) {
      try {
        // query
-      //  String sql = "select * from person where concat(Lastname, Firstname) like ? and EnrolLmentDate IS NULL";
-      String sqlSearchPersonName= "where person.PersonID= courseinstructor.PersonID"
-      +"and"
-      +"course.CourseID= courseinstructor.CourseID "
-      +"and" 
-      +"concat(person.FirstName, person.LastName) like ? or course.Title like ?";
-      String sqlSearchCourseName= "where person.PersonID= courseinstructor.PersonID"
-      +"and"
-      +"course.CourseID= courseinstructor.CourseID "
-      +"and" 
-      +"course.Title like ?";
+      String sqlSearchPersonName= " person.PersonID= courseinstructor.PersonID and course.CourseID= courseinstructor.CourseID and concat(person.FirstName, person.LastName) like ?";
+
+      String sqlSearchCourseName= " person.PersonID= courseinstructor.PersonID and course.CourseID= courseinstructor.CourseID and course.Title like ?";
+                            
        String sql = "select courseinstructor.PersonID, courseinstructor.CourseID, person.FirstName, person.LastName , course.Title "
-       + "from "
-       + "person,course, courseinstructor "
-       + sqlSearchPersonName + "or"+ sqlSearchCourseName;
+                    + "from "
+                    + "person , course, courseinstructor "
+                    +"where"
+                    + sqlSearchPersonName + " or " + sqlSearchCourseName;
 
        PreparedStatement statement = dc.connection.prepareCall(sql);
        statement.setString(1, "%" + keyword + "%");
-
+       statement.setString(2, "%" + keyword + "%");
+       System.out.println(sql);
        ResultSet resultSet = statement.executeQuery();
 
        while (resultSet.next()) {
+        System.out.println("log"+resultSet.getString("Title"));
         CourseInstructor std = new CourseInstructor(
           resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),
           resultSet.getString("FirstName"), resultSet.getString("LastName"),
