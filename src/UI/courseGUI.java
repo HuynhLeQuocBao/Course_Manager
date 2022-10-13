@@ -37,6 +37,10 @@ public class courseGUI extends JFrame {
     List<String> departmentList = courseBLL.getAllDepartment();
     List<OnsiteCourse> courseOnsiteList = new ArrayList<OnsiteCourse>();
     List<OnlineCourse> courseOnlineList = new ArrayList<OnlineCourse>();
+
+    OnsiteCourse onsiteCourse;
+    OnlineCourse onlineCourse;
+
     public JFrame f = new JFrame();
     private JPanel contentPane;
     private JTextField tfCredits;
@@ -422,7 +426,7 @@ public class courseGUI extends JFrame {
         cbDepartmentID
                 .setSelectedItem(
                         modelOnline.getValueAt(selectedIndex, 3) + "_" +
-                                model.getValueAt(selectedIndex, 4));
+                                modelOnline.getValueAt(selectedIndex, 4));
 
         cbCourseType.setSelectedItem(cbFilter.getSelectedItem().toString());
         tfUrl.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 5)));
@@ -444,8 +448,9 @@ public class courseGUI extends JFrame {
                 String day = tfDay.getText().trim();
                 String time = tfTime.getText().trim();
 
-                OnsiteCourse course = new OnsiteCourse(courseId, title, credits, departmentID, location, day, time);
-                JOptionPane.showMessageDialog(null, courseBLL.addCourseOnsite(course));
+                onsiteCourse = new OnsiteCourse(courseId, title, credits, departmentID, location, day,
+                        time);
+                JOptionPane.showMessageDialog(null, courseBLL.addCourse("onsite", onsiteCourse, onlineCourse));
                 displayList("onsite");
             }
             // add course online
@@ -453,8 +458,8 @@ public class courseGUI extends JFrame {
                     && !tfUrl.getText().trim().equals("")) {
                 String url = tfUrl.getText().trim();
 
-                OnlineCourse course = new OnlineCourse(courseId, title, credits, departmentID, url);
-                JOptionPane.showMessageDialog(null, courseBLL.addCourseOnline(course));
+                onlineCourse = new OnlineCourse(courseId, title, credits, departmentID, url);
+                JOptionPane.showMessageDialog(null, courseBLL.addCourse("online", onsiteCourse, onlineCourse));
                 displayList("online");
             } else {
                 JOptionPane.showMessageDialog(null,
@@ -494,7 +499,7 @@ public class courseGUI extends JFrame {
                 modelOnline.setValueAt(course.getTitle(), i, 1);
                 modelOnline.setValueAt(course.getCredits(), i, 2);
                 modelOnline.setValueAt(course.getDepartmentID(), i, 3);
-                model.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
+                modelOnline.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
                 modelOnline.setValueAt(course.getUrl(), i, 5);
                 i++;
             }

@@ -68,66 +68,26 @@ public class courseDAL {
         return courseOnlineList;
     }
 
-    public boolean insertOnsiteCourse(OnsiteCourse onsiteCourse) {
+    public boolean insertCourse(String courseType, OnsiteCourse onsiteCourse, OnlineCourse onlineCourse) {
         boolean result = false;
-        if (dc.openConnection()) {
-            try {
-                // add course
-                String sql = "insert into course(Title, Credits, DepartmentID) values (?, ?, ?)";
-                PreparedStatement statement = dc.connection.prepareCall(sql);
-
-                statement.setString(1, onsiteCourse.getTitle());
-                statement.setInt(2, Integer.parseInt(onsiteCourse.getCredits()));
-                statement.setInt(3, onsiteCourse.getDepartmentID());
-
-                if (statement.executeUpdate() >= 1) {
-                    int courseID = this.getCourseId();
-                    // add onsiteCourse
-                    String sqlOnsiteCourse = "insert into onsitecourse(CourseID, Location, Days, Time) values (?, ?, ?, ?)";
-                    PreparedStatement statementOnsite = dc.connection.prepareCall(sqlOnsiteCourse);
-
-                    JOptionPane.showMessageDialog(null, "test" + courseID);
-
-                    statementOnsite.setInt(1, courseID);
-                    statementOnsite.setString(2, onsiteCourse.getLocation());
-                    statementOnsite.setString(3, onsiteCourse.getDate());
-                    statementOnsite.setString(4, onsiteCourse.getTime());
-
-                    if (statementOnsite.executeUpdate() >= 1) {
-                        result = true;
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println(e);
-            } finally {
-                dc.closeConnection();
-            }
+        Course course;
+        if (courseType == "onsite") {
+            course = onsiteCourse;
+        } else {
+            course = onlineCourse;
         }
-        return result;
-    }
-
-    public boolean insertOnlineCourse(OnlineCourse onlineCourse) {
-        boolean result = false;
         if (dc.openConnection()) {
             try {
-                // add course
                 String sql = "insert into course(Title, Credits, DepartmentID) values (?, ?, ?)";
                 PreparedStatement statement = dc.connection.prepareCall(sql);
 
-                statement.setString(1, onlineCourse.getTitle());
-                statement.setString(2, onlineCourse.getCredits());
-                statement.setInt(3, onlineCourse.getDepartmentID());
+                statement.setString(1, course.getTitle());
+                statement.setInt(2, Integer.parseInt(course.getCredits()));
+                statement.setInt(3, course.getDepartmentID());
 
-                // get courseID
-                int courseId = this.getCourseId();
-                // add onlineCourse
-                String sqlOnlineCourse = "insert into onlineCourse(CourseID, Location, Days, Time) values (?, ?, ?, ?)";
-                PreparedStatement statementOnsite = dc.connection.prepareCall(sqlOnlineCourse);
+                JOptionPane.showMessageDialog(null, course.getTitle());
 
-                statement.setInt(1, courseId);
-                statement.setString(2, onlineCourse.getUrl());
-
-                if (statement.executeUpdate() >= 1 && statementOnsite.executeUpdate() >= 1) {
+                if (statement.executeUpdate() >= 1 && this.insertCourseByType(courseType, onlineCourse, onsiteCourse)) {
                     result = true;
                 }
             } catch (SQLException e) {
@@ -137,36 +97,33 @@ public class courseDAL {
             }
         }
         return result;
+
     }
 
-    public boolean insertCourseByType(String courseType, OnlineCourse onlineCourse, OnsiteCourse onsiteCourse) {
+    public boolean insertCourseByType(String courseType, OnlineCourse onlineCourse, OnsiteCourse onsiteCourse)
+            throws SQLException {
         boolean result = false;
-        if (dc.openConnection()) {
-            try {
-                // add course
-                String sql = "insert into course(Title, Credits, DepartmentID) values (?, ?, ?)";
-                PreparedStatement statement = dc.connection.prepareCall(sql);
+        String sql = "";
+        int courseId = this.getCourseId();
+        if (courseType == "onsite") {
+            sql = "insert into onsiteCourse(CourseID, Location, Days, Time) values (?, ?, ?, ?)";
+            PreparedStatement statement = dc.connection.prepareCall(sql);
 
-                statement.setString(1, onlineCourse.getTitle());
-                statement.setString(2, onlineCourse.getCredits());
-                statement.setInt(3, onlineCourse.getDepartmentID());
+            statement.setInt(1, courseId);
+            statement.setString(2, onsiteCourse.getLocation());
+            statement.setString(3, onsiteCourse.getDate());
+            statement.setString(4, onsiteCourse.getTime());
+            if (statement.executeUpdate() >= 1) {
+                result = true;
+            }
+        } else {
+            sql = "insert into onlineCourse(CourseID, url) values (?, ?)";
+            PreparedStatement statement = dc.connection.prepareCall(sql);
 
-                // get courseID
-                int courseId = this.getCourseId();
-                // add onlineCourse
-                String sqlOnlineCourse = "insert into onlineCourse(CourseID, Location, Days, Time) values (?, ?, ?, ?)";
-                PreparedStatement statementOnsite = dc.connection.prepareCall(sqlOnlineCourse);
-
-                statement.setInt(1, courseId);
-                statement.setString(2, onlineCourse.getUrl());
-
-                if (statement.executeUpdate() >= 1 && statementOnsite.executeUpdate() >= 1) {
-                    result = true;
-                }
-            } catch (SQLException e) {
-                System.out.println(e);
-            } finally {
-                dc.closeConnection();
+            statement.setInt(1, courseId);
+            statement.setString(2, onlineCourse.getUrl());
+            if (statement.executeUpdate() >= 1) {
+                result = true;
             }
         }
         return result;
@@ -226,7 +183,7 @@ public class courseDAL {
                     // delete onsite course
                     this.deleteTypeOfCourse("onsite", onsiteCourse.getCourseID());
                     // add online course
-                    this.insertOnlineCourse(onlineCourse);
+                    // this.insertOnlineCourse(onlineCourse);
                 }
                 // current type: ONLINE
                 else {
