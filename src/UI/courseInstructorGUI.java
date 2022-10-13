@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ public class courseInstructorGUI extends JFrame {
   private JTextField tfFind;
   DefaultTableModel model = new DefaultTableModel();
   private JTable table;
+  private JComboBox cbPerson, cbCourse;
 
   public courseInstructorGUI() {
     initComponent();
@@ -111,13 +113,13 @@ public class courseInstructorGUI extends JFrame {
     lbPersonID.setBounds(25, 46, 91, 28);
     panel.add(lbPersonID);
     
-    JComboBox cbPersonID = new JComboBox(teacherName.toArray());
-    cbPersonID.setBounds(126, 48, 186, 28);
-    panel.add(cbPersonID);
+     cbPerson = new JComboBox(teacherName.toArray());
+    cbPerson.setBounds(126, 48, 186, 28);
+    panel.add(cbPerson);
     
-    JComboBox cbCourseID = new JComboBox(courseList.toArray());
-    cbCourseID.setBounds(126, 134, 186, 28);
-    panel.add(cbCourseID);
+     cbCourse = new JComboBox(courseList.toArray());
+    cbCourse.setBounds(126, 134, 186, 28);
+    panel.add(cbCourse);
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setBounds(324, 59, 1036, 652);
     contentPane.add(scrollPane);
@@ -207,75 +209,75 @@ public class courseInstructorGUI extends JFrame {
   }
 
   private void btnResetActionPerformed(ActionEvent e) {
-    cbPersonID.setSelectetIndex(0);
-    tfCourseID.setText("");
+    cbPerson.setSelectedIndex(0);
+    cbCourse.setSelectedIndex(0);
+
   }
 
   private void jTableMouseClicked(MouseEvent e) {
     int selectedIndex = table.getSelectedRow();
     if (selectedIndex >= 0) {
-      tfPersonID.setText(String.valueOf(model.getValueAt(selectedIndex, 1)));
-      tfCourseID.setText(String.valueOf(model.getValueAt(selectedIndex, 2)));
+      cbPerson.setSelectedItem(String.valueOf(model.getValueAt(selectedIndex, 1)));
+      cbCourse.setSelectedItem(String.valueOf(model.getValueAt(selectedIndex, 2)));
     }
   }
-  
- private void btnAddActionPerformed(ActionEvent e) {
-   if (!tfCourseID.getText().trim().equals("") && !tfPersonID.getText().trim().equals("")) {
-     try {
-       int codePerson = Integer.parseInt(tfPersonID.getText());
-       int codeCourse = Integer.parseInt(tfCourseID.getText());
-
-       CourseInstructor p = new CourseInstructor(codeCourse, codePerson);
-
-       JOptionPane.showMessageDialog(null, instructorBBL.addCourseInstructor(p));
-
-       displayList();
-       btnResetActionPerformed(e);
-     } catch (NumberFormatException ex) {
-
-     }
-   } else {
-     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin cần phân công khóa học");
-   }
- }
-
- private void btnEditActionPerformed(ActionEvent e) {
-   int index = table.getSelectedRow();
-   if (index >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("")) {
-      int codePerson = Integer.parseInt(tfPersonID.getText());
-     int codeCourse = Integer.parseInt(tfCourseID.getText());
-      CourseInstructor p = new CourseInstructor();
-     p.setPersonID(Integer.parseInt(tfPersonID.getText()));
-     p.setCourseID(Integer.parseInt(tfCourseID.getText()));
-     JOptionPane.showMessageDialog(null, instructorBBL.editCourseInstructor(p , codePerson, codeCourse ));
-     displayList();
-     btnResetActionPerformed(e);
-   } else {
-     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
-   }
- }
-
- private void btnRemoveActionPerformed(ActionEvent e) {
-   int selectedIndex = table.getSelectedRow();
-   if (selectedIndex >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("") ) {
-     int codePerson = Integer.parseInt(tfPersonID.getText());
-     int codeCourse = Integer.parseInt(tfCourseID.getText());
-     int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa sinh viên này?", "Question",
-         JOptionPane.YES_NO_OPTION);
-
-     if (option == JOptionPane.YES_OPTION) {
-       int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
-           JOptionPane.YES_NO_OPTION);
-       if (sure == JOptionPane.YES_OPTION) {
-         JOptionPane.showMessageDialog(null, instructorBBL.deleteCourseInstructor(codePerson, codeCourse));
-         displayList();
-         btnResetActionPerformed(e);
-       }
-     }
-   } else {
-     JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm cần xóa");
-   }
- }
+// private void btnAddActionPerformed(ActionEvent e) {
+//   if (!tfCourseID.getText().trim().equals("") && !tfPersonID.getText().trim().equals("")) {
+//     try {
+//       int codePerson = Integer.parseInt(tfPersonID.getText());
+//       int codeCourse = Integer.parseInt(tfCourseID.getText());
+//
+//       CourseInstructor p = new CourseInstructor(codeCourse, codePerson);
+//
+//       JOptionPane.showMessageDialog(null, instructorBBL.addCourseInstructor(p));
+//
+//       displayList();
+//       btnResetActionPerformed(e);
+//     } catch (NumberFormatException ex) {
+//
+//     }
+//   } else {
+//     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin cần phân công khóa học");
+//   }
+// }
+//
+// private void btnEditActionPerformed(ActionEvent e) {
+//   int index = table.getSelectedRow();
+//   if (index >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("")) {
+//      int codePerson = Integer.parseInt(tfPersonID.getText());
+//     int codeCourse = Integer.parseInt(tfCourseID.getText());
+//      CourseInstructor p = new CourseInstructor();
+//     p.setPersonID(Integer.parseInt(tfPersonID.getText()));
+//     p.setCourseID(Integer.parseInt(tfCourseID.getText()));
+//     JOptionPane.showMessageDialog(null, instructorBBL.editCourseInstructor(p , codePerson, codeCourse ));
+//     displayList();
+//     btnResetActionPerformed(e);
+//   } else {
+//     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
+//   }
+// }
+//
+// private void btnRemoveActionPerformed(ActionEvent e) {
+//   int selectedIndex = table.getSelectedRow();
+//   if (selectedIndex >= 0 && !tfPersonID.getText().equals("") && !tfCourseID.getText().equals("") ) {
+//     int codePerson = Integer.parseInt(tfPersonID.getText());
+//     int codeCourse = Integer.parseInt(tfCourseID.getText());
+//     int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa sinh viên này?", "Question",
+//         JOptionPane.YES_NO_OPTION);
+//
+//     if (option == JOptionPane.YES_OPTION) {
+//       int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Question",
+//           JOptionPane.YES_NO_OPTION);
+//       if (sure == JOptionPane.YES_OPTION) {
+//         JOptionPane.showMessageDialog(null, instructorBBL.deleteCourseInstructor(codePerson, codeCourse));
+//         displayList();
+//         btnResetActionPerformed(e);
+//       }
+//     }
+//   } else {
+//     JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm cần xóa");
+//   }
+// }
 //
 //  private void btnSearchActionPerformed(ActionEvent e) {
 //    String studentName = tfFind.getText();

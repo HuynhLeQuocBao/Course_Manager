@@ -26,17 +26,15 @@ import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import BLL.courseBLL;
-import BLL.departmentBLL;
 import Base.*;
 import javax.swing.ImageIcon;
 import java.awt.Panel;
 
 public class courseGUI extends JFrame {
     courseBLL courseBLL = new courseBLL();
-    departmentBLL departmentBLL = new departmentBLL();
     String[] courseTypeList = { "Course Onsite", "Course Online" };
     String[] departmentListForCB = {};
-    List<String> departmentList = departmentBLL.getAllDepartment();
+    List<String> departmentList = courseBLL.getAllDepartment();
     List<OnsiteCourse> courseOnsiteList = new ArrayList<OnsiteCourse>();
     List<OnlineCourse> courseOnlineList = new ArrayList<OnlineCourse>();
     public JFrame f = new JFrame();
@@ -69,7 +67,7 @@ public class courseGUI extends JFrame {
      * @return
      */
     public void initComponent() {
-        setTitle("QuÃ¡ÂºÂ£n lÃƒÂ­ sÃ¡ÂºÂ£n phÃ¡ÂºÂ©m");
+        setTitle("Quáº£n lÃ­ sáº£n pháº©m");
         setSize(1366, 740);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane = new JPanel();
@@ -108,7 +106,7 @@ public class courseGUI extends JFrame {
         lbCourseType.setBounds(25, 208, 91, 28);
         panel.add(lbCourseType);
 
-        JButton btnEdit = new JButton("Sá»­a");
+        JButton btnEdit = new JButton("Sửa");
         btnEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
@@ -116,7 +114,7 @@ public class courseGUI extends JFrame {
         btnEdit.setBounds(143, 508, 69, 28);
         panel.add(btnEdit);
 
-        JButton btnAdd = new JButton("ThÃªm");
+        JButton btnAdd = new JButton("Thêm");
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,7 +125,7 @@ public class courseGUI extends JFrame {
         btnAdd.setBounds(259, 508, 69, 28);
         panel.add(btnAdd);
 
-        JButton btnRemove = new JButton("XÃ³a");
+        JButton btnRemove = new JButton("Xóa");
         btnRemove.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -249,6 +247,7 @@ public class courseGUI extends JFrame {
         model.addColumn("No");
         model.addColumn("Title");
         model.addColumn("Credits");
+        model.addColumn("DepartmentID");
         model.addColumn("Department");
         model.addColumn("Location");
         model.addColumn("Days");
@@ -260,6 +259,7 @@ public class courseGUI extends JFrame {
         modelOnline.addColumn("No");
         modelOnline.addColumn("Title");
         modelOnline.addColumn("Credits");
+        modelOnline.addColumn("DepartmentID");
         modelOnline.addColumn("Department");
         modelOnline.addColumn("Url");
 
@@ -284,13 +284,13 @@ public class courseGUI extends JFrame {
         contentPane.add(panel1);
         panel1.setLayout(null);
 
-        JLabel lbTitle = new JLabel("Danh SÃ¡ch KhÃ³a Há»�c");
+        JLabel lbTitle = new JLabel("Danh Sách Khóa Học");
         lbTitle.setForeground(Color.WHITE);
         lbTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
         lbTitle.setBounds(301, 6, 387, 36);
         panel1.add(lbTitle);
 
-        JButton btnSearch = new JButton("TÃ¬m kiáº¿m");
+        JButton btnSearch = new JButton("Tìm kiếm");
         btnSearch.setBounds(1249, 6, 90, 38);
         panel1.add(btnSearch);
         tfSearch = new JTextField();
@@ -298,7 +298,7 @@ public class courseGUI extends JFrame {
         panel1.add(tfSearch);
         tfSearch.setColumns(10);
 
-        JButton btnReturn = new JButton("Trá»Ÿ láº¡i");
+        JButton btnReturn = new JButton("Trở lại");
         btnReturn.setBounds(22, 13, 90, 38);
         panel1.add(btnReturn);
 
@@ -347,7 +347,7 @@ public class courseGUI extends JFrame {
             }
         });
 
-        JLabel lbSearch = new JLabel("TÃ¬m kiáº¿m theo tÃªn khÃ³a há»�c");
+        JLabel lbSearch = new JLabel("Tìm kiếm theo tên khóa học");
         lbSearch.setBounds(1023, 41, 216, 29);
         panel1.add(lbSearch);
         lbSearch.setForeground(Color.WHITE);
@@ -404,12 +404,12 @@ public class courseGUI extends JFrame {
 
             cbDepartmentID
                     .setSelectedItem(model.getValueAt(selectedIndex, 3) + "_" +
-                            model.getValueAt(selectedIndex, 0));
+                            model.getValueAt(selectedIndex, 4));
 
             cbCourseType.setSelectedItem(cbFilter.getSelectedItem().toString());
-            tfLocation.setText(String.valueOf(model.getValueAt(selectedIndex, 4)));
-            tfDay.setText(String.valueOf(model.getValueAt(selectedIndex, 5)));
-            tfTime.setText(String.valueOf(model.getValueAt(selectedIndex, 6)));
+            tfLocation.setText(String.valueOf(model.getValueAt(selectedIndex, 5)));
+            tfDay.setText(String.valueOf(model.getValueAt(selectedIndex, 6)));
+            tfTime.setText(String.valueOf(model.getValueAt(selectedIndex, 7)));
         }
     }
 
@@ -422,10 +422,10 @@ public class courseGUI extends JFrame {
         cbDepartmentID
                 .setSelectedItem(
                         modelOnline.getValueAt(selectedIndex, 3) + "_" +
-                                model.getValueAt(selectedIndex, 0));
+                                model.getValueAt(selectedIndex, 4));
 
         cbCourseType.setSelectedItem(cbFilter.getSelectedItem().toString());
-        tfUrl.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 4)));
+        tfUrl.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 5)));
     }
 
     // add course
@@ -478,9 +478,10 @@ public class courseGUI extends JFrame {
                 model.setValueAt(course.getTitle(), i, 1);
                 model.setValueAt(course.getCredits(), i, 2);
                 model.setValueAt(course.getDepartmentID(), i, 3);
-                model.setValueAt(course.getLocation(), i, 4);
-                model.setValueAt(course.getDate(), i, 5);
-                model.setValueAt(course.getTime(), i, 6);
+                model.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
+                model.setValueAt(course.getLocation(), i, 5);
+                model.setValueAt(course.getDate(), i, 6);
+                model.setValueAt(course.getTime(), i, 7);
                 i++;
             }
         } else {
@@ -493,7 +494,8 @@ public class courseGUI extends JFrame {
                 modelOnline.setValueAt(course.getTitle(), i, 1);
                 modelOnline.setValueAt(course.getCredits(), i, 2);
                 modelOnline.setValueAt(course.getDepartmentID(), i, 3);
-                modelOnline.setValueAt(course.getUrl(), i, 4);
+                model.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
+                modelOnline.setValueAt(course.getUrl(), i, 5);
                 i++;
             }
         }
