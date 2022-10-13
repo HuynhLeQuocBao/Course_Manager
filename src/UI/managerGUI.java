@@ -47,45 +47,45 @@ public class managerGUI extends JFrame {
     contentPane.add(panel);
     panel.setLayout(null);
     f.setResizable(false);
-    
-        JButton btnPerson = new JButton("Quản lý nhân sự");
-        btnPerson.setBounds(222, 50, 251, 38);
-        panel.add(btnPerson);
-        
-        JButton btnCourse = new JButton("Quản lý khóa học");
-        btnCourse.setBounds(222, 120, 251, 38);
-        panel.add(btnCourse);
-        
-        JButton btnRole = new JButton("Quản lý phân công");
-        btnRole.setBounds(222, 190, 251, 38);
-        panel.add(btnRole);
-        
-        JButton btnResult = new JButton("Quản lý kết quả");
-        btnResult.setBounds(222, 260, 251, 38);
-        panel.add(btnResult);
-        
-        btnPerson.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            f.setVisible(false);
-            studentGUI p = new studentGUI();
-            p.f.setVisible(true);
-          }
-        });
-        btnCourse.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            f.setVisible(false);
-            courseGUI p = new courseGUI();
-            p.f.setVisible(true);
-          }
-        });
-        btnRole.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            f.setVisible(false);
-            courseInstructorGUI p = new courseInstructorGUI();
-            p.f.setVisible(true);
-          }
-        });
-        
+
+    JButton btnPerson = new JButton("Quản lý người học, người dạy");
+    btnPerson.setBounds(222, 50, 251, 38);
+    panel.add(btnPerson);
+
+    JButton btnCourse = new JButton("Quản lý khóa học");
+    btnCourse.setBounds(222, 120, 251, 38);
+    panel.add(btnCourse);
+
+    JButton btnRole = new JButton("Quản lý phân công");
+    btnRole.setBounds(222, 190, 251, 38);
+    panel.add(btnRole);
+
+    JButton btnResult = new JButton("Quản lý kết quả");
+    btnResult.setBounds(222, 260, 251, 38);
+    panel.add(btnResult);
+
+    btnPerson.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        f.setVisible(false);
+        personGUI p = new personGUI();
+        p.f.setVisible(true);
+      }
+    });
+    btnCourse.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        f.setVisible(false);
+        courseGUI p = new courseGUI();
+        p.f.setVisible(true);
+      }
+    });
+    btnRole.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        f.setVisible(false);
+        courseInstructorGUI p = new courseInstructorGUI();
+        p.f.setVisible(true);
+      }
+    });
+
     Panel panel1 = new Panel();
     panel1.setBackground(new Color(50, 205, 50));
     panel1.setBounds(0, 0, 680, 62);

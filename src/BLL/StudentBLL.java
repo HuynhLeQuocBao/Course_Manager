@@ -22,6 +22,9 @@ public class StudentBLL {
     }
 
     public String deleteStudent(int id) {
+        if (stuDAL.hasPersonIdWhenRemove(id)) {
+            return "Mã sinh viên đang được sử dụng. Không được xóa";
+        }
         if (stuDAL.delete(id)) {
             return "Xóa sinh viên thành công";
         }

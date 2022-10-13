@@ -10,9 +10,11 @@ public class TeacherBLL {
   public List<Teacher> getAllTeacher() {
     return teaDAL.findAll();
   }
-  public List<String> getTeacherName(){
+
+  public List<String> getTeacherName() {
     return teaDAL.getTeacherNameAndID();
-  } 
+  }
+
   public String addTeacher(Teacher p) {
     if (teaDAL.hasPersonID(p.getPersonID())) {
       return "Mã giáo viên bị trùng. Vui lòng nhập lại";
@@ -24,6 +26,9 @@ public class TeacherBLL {
   }
 
   public String deleteTeacher(int id) {
+    if (teaDAL.hasPersonIdWhenRemove(id)) {
+      return "Mã giáo viên đang được sử dụng. Không được xóa";
+    }
     if (teaDAL.delete(id)) {
       return "Xóa giáo viên thành công";
     }

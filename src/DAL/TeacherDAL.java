@@ -33,6 +33,7 @@ public class TeacherDAL {
     }
     return teacherList;
   }
+
   public List<String> getTeacherNameAndID() {
     List<String> teacherNameList = new ArrayList<String>();
 
@@ -45,8 +46,9 @@ public class TeacherDAL {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-             String std=resultSet.getInt("PersonID")+"_"+resultSet.getString("FirstName")+" "+resultSet.getString("LastName");
-              teacherNameList.add(std);
+          String std = resultSet.getInt("PersonID") + "_" + resultSet.getString("FirstName") + " "
+              + resultSet.getString("LastName");
+          teacherNameList.add(std);
         }
       } catch (SQLException e) {
         System.out.println(e);
@@ -56,6 +58,7 @@ public class TeacherDAL {
     }
     return teacherNameList;
   }
+
   public boolean insert(Teacher p) {
     boolean result = false;
     if (dc.openConnection()) {
@@ -161,6 +164,30 @@ public class TeacherDAL {
         Statement statement = dc.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         result = resultSet.next();
+      } catch (SQLException e) {
+        System.out.println(e);
+      } finally {
+        dc.closeConnection();
+      }
+    }
+    return result;
+  }
+
+  public boolean hasPersonIdWhenRemove(int personID) {
+    boolean result = false;
+    if (dc.openConnection()) {
+      try {
+        String sql = "select * from officeassignment where InstructorID=" + personID;
+        String sql1 = "select * from courseinstructor where PersonID=" + personID;
+        Statement statement = dc.connection.createStatement();
+        Statement statement1 = dc.connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet1 = statement1.executeQuery(sql1);
+        if (resultSet.next() && resultSet1.next()) {
+          result = true;
+        } else {
+          result = false;
+        }
       } catch (SQLException e) {
         System.out.println(e);
       } finally {

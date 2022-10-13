@@ -147,4 +147,28 @@ public class StudentDAL {
     }
     return result;
   }
+
+  public boolean hasPersonIdWhenRemove(int personID) {
+    boolean result = false;
+    if (dc.openConnection()) {
+      try {
+        String sql = "select * from studentgrade where StudentID=" + personID;
+        String sql1 = "select * from courseinstructor where PersonID=" + personID;
+        Statement statement = dc.connection.createStatement();
+        Statement statement1 = dc.connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet1 = statement1.executeQuery(sql1);
+        if (resultSet.next() && resultSet1.next()) {
+          result = true;
+        } else {
+          result = false;
+        }
+      } catch (SQLException e) {
+        System.out.println(e);
+      } finally {
+        dc.closeConnection();
+      }
+    }
+    return result;
+  }
 }
