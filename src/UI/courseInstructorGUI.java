@@ -45,7 +45,7 @@ public class courseInstructorGUI extends JFrame {
   
   public courseInstructorGUI() {
     initComponent();
-   displayList();
+   displayCourseInstructorList();
   }
 
   /**
@@ -213,7 +213,7 @@ public class courseInstructorGUI extends JFrame {
     cbPerson.setSelectedIndex(0);
     cbCourse.setSelectedIndex(0);
     tfFind.setText("");
-    displayList();
+    displayCourseInstructorList();
   }
 
   private void jTableMouseClicked(MouseEvent e) {
@@ -242,7 +242,7 @@ public class courseInstructorGUI extends JFrame {
 
        JOptionPane.showMessageDialog(null, instructorBBL.addCourseInstructor(p));
 
-       displayList();
+       displayCourseInstructorList();
        btnResetActionPerformed(e);
      } catch (NumberFormatException ex) {
 
@@ -263,10 +263,10 @@ public class courseInstructorGUI extends JFrame {
       
       CourseInstructor p = new CourseInstructor(courseID,personID);
      JOptionPane.showMessageDialog(null, instructorBBL.editCourseInstructor(p , cbPersonIdValueClick, cbCourseIdValueClick ));
-     displayList();
+     displayCourseInstructorList();
      btnResetActionPerformed(e);
    } else {
-     JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sinh viên");
+     JOptionPane.showMessageDialog(null, "Vui lòng chọn đày đủ thông tin phân công");
    }
  }
 
@@ -283,7 +283,7 @@ public class courseInstructorGUI extends JFrame {
            JOptionPane.YES_NO_OPTION);
        if (sure == JOptionPane.YES_OPTION) {
          JOptionPane.showMessageDialog(null, instructorBBL.deleteCourseInstructor(personID, courseID));
-         displayList();
+         displayCourseInstructorList();
          btnResetActionPerformed(e);
        }
      }
@@ -299,8 +299,8 @@ public class courseInstructorGUI extends JFrame {
       courseIntructorList = instructorBBL.searchCourseInstructor(keyword);
       System.out.println("chuoi"+courseIntructorList);
       if (courseIntructorList.size() == 0) {
-        JOptionPane.showMessageDialog(null, "Không có khóa học cần tìm");
-        displayList();
+        JOptionPane.showMessageDialog(null, "Không có phân công cần tìm");
+        displayCourseInstructorList();
       } else {
         model.setRowCount(0);
         int i = 0;
@@ -318,7 +318,7 @@ public class courseInstructorGUI extends JFrame {
     }
   }
 
-private void displayList() {
+private void displayCourseInstructorList() {
   model.setRowCount(0);
   courseIntructorList = instructorBBL.getAllCourseInstructor();
   int i = 0;

@@ -13,7 +13,7 @@ public class courseInstructorDAL {
     if (dc.openConnection()) {
       try {
         // query
-        String sql = "select courseinstructor.PersonID, courseinstructor.CourseID,  person.FirstName ,person.LastName, course.Title "
+        String sql = "select courseinstructor.PersonID, courseinstructor.CourseID,  person.FirstName ,person.LastName, course.Title"
             + "from "
             + "person,course, courseinstructor "
             + "where person.PersonID= courseinstructor.PersonID "
@@ -25,7 +25,9 @@ public class courseInstructorDAL {
 
         while (resultSet.next()) {
           CourseInstructor std = new CourseInstructor(
-              resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),  resultSet.getString("FirstName"), resultSet.getString("LastName"), resultSet.getString("Title"));
+              resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),  resultSet.getString("FirstName"), 
+              resultSet.getString("LastName"), resultSet.getString("Title")
+          );
           courseInstructorList.add(std);
         }
       } catch (SQLException e) {
@@ -104,7 +106,7 @@ public class courseInstructorDAL {
    return result;
  }
 
- public List<CourseInstructor> findByName(String keyword) {
+ public List<CourseInstructor> findCourseInstructor(String keyword) {
   
    List<CourseInstructor> courseInstructorList = new ArrayList<CourseInstructor>();
   System.out.println("dal"+keyword);

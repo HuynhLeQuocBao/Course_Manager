@@ -33,7 +33,7 @@ public class courseInstructorBLL {
    }
 
    public List<CourseInstructor> searchCourseInstructor(String keyword) {
-       return courseInstructorDAL.findByName(keyword);
+       return courseInstructorDAL.findCourseInstructor(keyword);
    }
 
 }
