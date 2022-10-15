@@ -302,6 +302,7 @@ public class StudentGradeDAL {
         while(rs.next())
         {
           s.add(rs.getInt("PersonID")+"_"+rs.getString("Firstname")+" "+ rs.getString("Lastname"));
+        //Do gom cột họ và tên lại với nhau
         }
       }
       catch(SQLException ex)

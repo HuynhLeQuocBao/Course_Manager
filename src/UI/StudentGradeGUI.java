@@ -77,7 +77,7 @@ public class StudentGradeGUI
     panel.setLayout(null);
     jf.setResizable(false);
     
-    JLabel lCodecourse = new JLabel("Mã khóa học ");
+    JLabel lCodecourse = new JLabel("Khóa học ");
     lCodecourse.setFont(new Font("SansSerif", Font.BOLD, 12));
     lCodecourse.setForeground(new Color(0, 0, 0));
     lCodecourse.setBounds(25, 10, 91, 28);
@@ -99,6 +99,7 @@ public class StudentGradeGUI
     panel.add(tfcourseName);
     tfcourseName.setColumns(10);
     tfcourseName.setEditable(false);
+    
     cbxcourseID.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent e) {
@@ -108,7 +109,7 @@ public class StudentGradeGUI
       }
   });
     
-    JLabel lCodestudent = new JLabel("Mã Sinh viên");
+    JLabel lCodestudent = new JLabel("Sinh viên");
     lCodestudent.setFont(new Font("SansSerif", Font.BOLD, 12));
     lCodestudent.setForeground(new Color(0, 0, 0));
     lCodestudent.setBounds(25, 130, 106, 28);
@@ -129,6 +130,7 @@ public class StudentGradeGUI
     panel.add(tfStudentName);
     tfStudentName.setColumns(10);
     tfStudentName.setEditable(false);
+    
     cbxstudentID.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent e) {
@@ -196,15 +198,16 @@ public class StudentGradeGUI
           return false;
       }
     };
+    
     table.setModel(model);
     model.addColumn("EnrollmentID");
-   
     model.addColumn("CourseID");
     model.addColumn("Course Name");
     model.addColumn("StudentID");
     model.addColumn("Student Name");
     model.addColumn("Grade");
     // ẩn cột enrollmentID đi
+    
     table.removeColumn(table.getColumnModel().getColumn(0));
     
     
@@ -406,7 +409,7 @@ public class StudentGradeGUI
              grade = Double.parseDouble(""+tfgrade.getText());
              StudentGrade std = new StudentGrade(enrollmentID, courseID, studentID, grade);
              JOptionPane.showMessageDialog(null, studentgradeBLL.update(std));
-            
+
             
           }
           displayList();
