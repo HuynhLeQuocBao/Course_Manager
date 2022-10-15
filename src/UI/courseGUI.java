@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
+
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -34,6 +37,7 @@ public class courseGUI extends JFrame {
     courseBLL courseBLL = new courseBLL();
     String[] courseTypeList = { "Course Onsite", "Course Online" };
     String[] departmentListForCB = {};
+    int courseId = 0;
     List<String> departmentList = courseBLL.getAllDepartment();
     List<OnsiteCourse> courseOnsiteList = new ArrayList<OnsiteCourse>();
     List<OnlineCourse> courseOnlineList = new ArrayList<OnlineCourse>();
@@ -62,7 +66,7 @@ public class courseGUI extends JFrame {
 
     public courseGUI() {
         initComponent();
-        displayList("onsite");
+        displayList(cbFilter.getSelectedItem().toString());
     }
 
     /**
@@ -113,6 +117,7 @@ public class courseGUI extends JFrame {
         JButton btnEdit = new JButton("Sửa");
         btnEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                btnEditActionPerformed(e);
             }
         });
         btnEdit.setBounds(143, 508, 69, 28);
@@ -132,7 +137,7 @@ public class courseGUI extends JFrame {
         JButton btnRemove = new JButton("Xóa");
         btnRemove.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                btnRemoveActionPerformed(e);
             }
         });
         btnRemove.setBounds(25, 508, 69, 28);
@@ -249,6 +254,7 @@ public class courseGUI extends JFrame {
         table = new JTable();
         table.setModel(model);
         model.addColumn("No");
+        model.addColumn("CourseID");
         model.addColumn("Title");
         model.addColumn("Credits");
         model.addColumn("DepartmentID");
@@ -261,6 +267,7 @@ public class courseGUI extends JFrame {
         tableOnlineCourse = new JTable();
         tableOnlineCourse.setModel(modelOnline);
         modelOnline.addColumn("No");
+        modelOnline.addColumn("CourseID");
         modelOnline.addColumn("Title");
         modelOnline.addColumn("Credits");
         modelOnline.addColumn("DepartmentID");
@@ -328,9 +335,6 @@ public class courseGUI extends JFrame {
                     tfDay.setVisible(true);
                     lbTime.setVisible(true);
                     tfTime.setVisible(true);
-
-                    displayList("onsite");
-
                 } else {
                     // display online list
                     scrollPane.setViewportView(tableOnlineCourse);
@@ -346,8 +350,8 @@ public class courseGUI extends JFrame {
                     lbUrl.setVisible(true);
                     tfUrl.setVisible(true);
 
-                    displayList("online");
                 }
+                displayList(cbFilter.getSelectedItem().toString());
             }
         });
 
@@ -364,7 +368,7 @@ public class courseGUI extends JFrame {
         panel1.add(lbFilter);
         btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                btnSearchActionPerformed(e);
             }
         });
         btnEdit.addActionListener(new ActionListener() {
@@ -402,34 +406,36 @@ public class courseGUI extends JFrame {
     private void jTableMouseClickedOnsite(MouseEvent e) {
         int selectedIndex = table.getSelectedRow();
         if (selectedIndex >= 0) {
+            courseId = Integer.parseInt(String.valueOf(model.getValueAt(selectedIndex, 1)));
             // onsite course selected
-            tfCourseTitle.setText(String.valueOf(model.getValueAt(selectedIndex, 1)));
-            tfCredits.setText(String.valueOf(model.getValueAt(selectedIndex, 2)));
+            tfCourseTitle.setText(String.valueOf(model.getValueAt(selectedIndex, 2)));
+            tfCredits.setText(String.valueOf(model.getValueAt(selectedIndex, 3)));
 
             cbDepartmentID
-                    .setSelectedItem(model.getValueAt(selectedIndex, 3) + "_" +
-                            model.getValueAt(selectedIndex, 4));
+                    .setSelectedItem(model.getValueAt(selectedIndex, 4) + "_" +
+                            model.getValueAt(selectedIndex, 5));
 
             cbCourseType.setSelectedItem(cbFilter.getSelectedItem().toString());
-            tfLocation.setText(String.valueOf(model.getValueAt(selectedIndex, 5)));
-            tfDay.setText(String.valueOf(model.getValueAt(selectedIndex, 6)));
-            tfTime.setText(String.valueOf(model.getValueAt(selectedIndex, 7)));
+            tfLocation.setText(String.valueOf(model.getValueAt(selectedIndex, 6)));
+            tfDay.setText(String.valueOf(model.getValueAt(selectedIndex, 7)));
+            tfTime.setText(String.valueOf(model.getValueAt(selectedIndex, 8)));
         }
     }
 
     private void jTableMouseClickedOnline(MouseEvent e) {
         int selectedIndex = tableOnlineCourse.getSelectedRow();
+        courseId = Integer.parseInt(String.valueOf(modelOnline.getValueAt(selectedIndex, 1)));
         // online course selected
-        tfCourseTitle.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 1)));
-        tfCredits.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 2)));
+        tfCourseTitle.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 2)));
+        tfCredits.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 3)));
 
         cbDepartmentID
                 .setSelectedItem(
-                        modelOnline.getValueAt(selectedIndex, 3) + "_" +
-                                modelOnline.getValueAt(selectedIndex, 4));
+                        modelOnline.getValueAt(selectedIndex, 4) + "_" +
+                                modelOnline.getValueAt(selectedIndex, 5));
 
         cbCourseType.setSelectedItem(cbFilter.getSelectedItem().toString());
-        tfUrl.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 5)));
+        tfUrl.setText(String.valueOf(modelOnline.getValueAt(selectedIndex, 6)));
     }
 
     // add course
@@ -451,7 +457,7 @@ public class courseGUI extends JFrame {
                 onsiteCourse = new OnsiteCourse(courseId, title, credits, departmentID, location, day,
                         time);
                 JOptionPane.showMessageDialog(null, courseBLL.addCourse("onsite", onsiteCourse, onlineCourse));
-                displayList("onsite");
+                displayList(cbFilter.getSelectedItem().toString());
             }
             // add course online
             else if (cbCourseType.getSelectedItem().toString().equals("Course Online")
@@ -460,33 +466,176 @@ public class courseGUI extends JFrame {
 
                 onlineCourse = new OnlineCourse(courseId, title, credits, departmentID, url);
                 JOptionPane.showMessageDialog(null, courseBLL.addCourse("online", onsiteCourse, onlineCourse));
-                displayList("online");
+                displayList(cbFilter.getSelectedItem().toString());
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Please fill all property of " + cbCourseType.getSelectedItem().toString());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please fill all property of course");
+            JOptionPane.showMessageDialog(null, "Vui lòng điền tất cả các trường của khóa học");
+        }
+    }
+
+    // edit course
+    private void btnEditActionPerformed(ActionEvent e) {
+        if (!tfCourseTitle.getText().trim().equals("") && !tfCredits.getText().trim().equals("")) {
+            String title = tfCourseTitle.getText().trim();
+            String credits = tfCredits.getText().trim();
+            int departmentID = Integer.parseInt(cbDepartmentID.getSelectedItem().toString().split("_")[0]);
+
+            String location = tfLocation.getText().trim();
+            String day = tfDay.getText().trim();
+            String time = tfTime.getText().trim();
+            String url = tfUrl.getText().trim();
+            if (cbFilter.getSelectedItem().toString().equals(cbCourseType.getSelectedItem().toString())) {
+                // update onsiteCourse
+                if (cbCourseType.getSelectedItem().equals("Course Onsite") && !tfLocation.getText().trim().equals("")
+                        && !tfDay.getText().trim().equals("")
+                        && !tfTime.getText().trim().equals("")) {
+                    location = tfLocation.getText().trim();
+                    day = tfDay.getText().trim();
+                    time = tfTime.getText().trim();
+
+                    onsiteCourse = new OnsiteCourse(courseId, title, credits, departmentID, location, day,
+                            time);
+                    JOptionPane.showMessageDialog(null, courseBLL.editCourse("onsite", onsiteCourse, onlineCourse));
+                    displayList(cbFilter.getSelectedItem().toString());
+
+                }
+                // update online course
+                else if (cbCourseType.getSelectedItem().equals("Course Online")
+                        && !tfUrl.getText().trim().equals("")) {
+                    url = tfUrl.getText().trim();
+
+                    onlineCourse = new OnlineCourse(courseId, title, credits, departmentID, url);
+                    JOptionPane.showMessageDialog(null, courseBLL.editCourse("online", onsiteCourse, onlineCourse));
+                    displayList(cbFilter.getSelectedItem().toString());
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Vui lòng điền đầy đủ thông tin của khóa học " + cbCourseType.getSelectedItem().toString());
+                }
+            } else { // change type of course
+                // change from course online to course onsite
+                if (cbCourseType.getSelectedItem().equals("Course Onsite")) {
+                    location = tfLocation.getText().trim();
+                    day = tfDay.getText().trim();
+                    time = tfTime.getText().trim();
+
+                    onsiteCourse = new OnsiteCourse(courseId, title, credits, departmentID, location, day,
+                            time);
+                    onlineCourse = new OnlineCourse(courseId, title, credits, departmentID, url);
+                    JOptionPane.showMessageDialog(null,
+                            courseBLL.editCourse("changeToOnsiteCourse", onsiteCourse, onlineCourse));
+                    displayList(cbFilter.getSelectedItem().toString());
+                }
+                // change from course onsite to course online
+                else if (cbCourseType.getSelectedItem().equals("Course Online")) {
+                    url = tfUrl.getText().trim();
+
+                    onsiteCourse = new OnsiteCourse(courseId, title, credits, departmentID, location, day,
+                            time);
+                    onlineCourse = new OnlineCourse(courseId, title, credits, departmentID, url);
+                    JOptionPane.showMessageDialog(null,
+                            courseBLL.editCourse("changeToOnlineCourse", onsiteCourse, onlineCourse));
+                    displayList(cbFilter.getSelectedItem().toString());
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Vui lòng điền đầy đủ thông tin của khóa học "
+                                    + cbCourseType.getSelectedItem().toString());
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin của khóa học");
+
+        }
+    }
+
+    // delete course
+    private void btnRemoveActionPerformed(ActionEvent e) {
+        if (!tfCourseTitle.getText().trim().equals("")) {
+            int option = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa khóa học này?", "Question",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (option == JOptionPane.YES_OPTION) {
+                int sure = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa khóa học này?",
+                        "Question", JOptionPane.YES_NO_OPTION);
+                if (sure == JOptionPane.YES_OPTION) {
+                    if (cbFilter.getSelectedItem().toString().equals("Course Onsite")) {
+                        JOptionPane.showMessageDialog(null, courseBLL.deleteCourse("onsite", courseId));
+                    } else {
+                        JOptionPane.showMessageDialog(null, courseBLL.deleteCourse("online", courseId));
+                    }
+                    displayList(cbFilter.getSelectedItem().toString());
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khóa học để xóa");
+        }
+    }
+
+    private void btnSearchActionPerformed(ActionEvent e) {
+        String title = String.valueOf(tfSearch.getText());
+        if (!title.equals("")) {
+            if (cbFilter.getSelectedItem().toString().equals("Course Onsite")) {
+                courseOnsiteList = courseBLL.findOnsiteCourse(title);
+            } else {
+                courseOnlineList = courseBLL.findOnlineCourse(title);
+            }
+            if (courseOnsiteList.size() == 0) {
+                JOptionPane.showMessageDialog(null, "Không có khóa học cần tìm kiếm");
+                displayList(cbFilter.getSelectedItem().toString());
+            } else {
+                if (cbFilter.getSelectedItem().toString().equals("Course Onsite")) {
+                    model.setRowCount(0);
+                    int i = 0;
+                    while (i < courseOnsiteList.size()) {
+                        OnsiteCourse course = courseOnsiteList.get(i);
+                        model.addRow(new Object[] {
+                                model.getRowCount() + 1, course.getCourseID(), course.getTitle(), course.getCredits(),
+                                course.getDepartmentID(), courseBLL.getDepartmentName(course.getDepartmentID()),
+                                course.getLocation(), course.getDate(), course.getTime()
+                        });
+                        i++;
+                    }
+                } else {
+                    modelOnline.setRowCount(0);
+                    int i = 0;
+                    while (i < courseOnlineList.size()) {
+                        OnlineCourse course = courseOnlineList.get(i);
+                        modelOnline.addRow(new Object[] {
+                                modelOnline.getRowCount() + 1, course.getCourseID(), course.getTitle(),
+                                course.getCredits(),
+                                course.getDepartmentID(), courseBLL.getDepartmentName(course.getDepartmentID()),
+                                course.getUrl()
+                        });
+                        i++;
+                    }
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tiêu đề của khóa học để tìm kiếm");
         }
     }
 
     // display list onsite course or online course
     public void displayList(String typeOfCourse) {
         int i = 0;
-        if (typeOfCourse.equals("onsite")) {
+        if (typeOfCourse.equals("Course Onsite")) {
             model.setRowCount(0);
             courseOnsiteList = courseBLL.getAllOnsiteCourse();
             while (i < courseOnsiteList.size()) {
                 OnsiteCourse course = courseOnsiteList.get(i);
                 model.addRow(new Object[6]);
                 model.setValueAt(model.getRowCount(), i, 0);
-                model.setValueAt(course.getTitle(), i, 1);
-                model.setValueAt(course.getCredits(), i, 2);
-                model.setValueAt(course.getDepartmentID(), i, 3);
-                model.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
-                model.setValueAt(course.getLocation(), i, 5);
-                model.setValueAt(course.getDate(), i, 6);
-                model.setValueAt(course.getTime(), i, 7);
+                model.setValueAt(course.getCourseID(), i, 1);
+                model.setValueAt(course.getTitle(), i, 2);
+                model.setValueAt(course.getCredits(), i, 3);
+                model.setValueAt(course.getDepartmentID(), i, 4);
+                model.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 5);
+                model.setValueAt(course.getLocation(), i, 6);
+                model.setValueAt(course.getDate(), i, 7);
+                model.setValueAt(course.getTime(), i, 8);
                 i++;
             }
         } else {
@@ -496,11 +645,12 @@ public class courseGUI extends JFrame {
                 OnlineCourse course = courseOnlineList.get(i);
                 modelOnline.addRow(new Object[6]);
                 modelOnline.setValueAt(model.getRowCount(), i, 0);
-                modelOnline.setValueAt(course.getTitle(), i, 1);
-                modelOnline.setValueAt(course.getCredits(), i, 2);
-                modelOnline.setValueAt(course.getDepartmentID(), i, 3);
-                modelOnline.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 4);
-                modelOnline.setValueAt(course.getUrl(), i, 5);
+                modelOnline.setValueAt(course.getCourseID(), i, 1);
+                modelOnline.setValueAt(course.getTitle(), i, 2);
+                modelOnline.setValueAt(course.getCredits(), i, 3);
+                modelOnline.setValueAt(course.getDepartmentID(), i, 4);
+                modelOnline.setValueAt(courseBLL.getDepartmentName(course.getDepartmentID()), i, 5);
+                modelOnline.setValueAt(course.getUrl(), i, 6);
                 i++;
             }
         }
