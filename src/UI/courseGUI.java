@@ -355,13 +355,13 @@ public class courseGUI extends JFrame {
             }
         });
 
-        JLabel lbSearch = new JLabel("Tìm kiếm theo tên khóa học");
-        lbSearch.setBounds(1023, 41, 216, 29);
+        JLabel lbSearch = new JLabel("Tìm kiếm theo tiêu đề khóa học");
+        lbSearch.setBounds(1023, 41, 280, 29);
         panel1.add(lbSearch);
         lbSearch.setForeground(Color.WHITE);
         lbSearch.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-        JLabel lbFilter = new JLabel("Filter by");
+        JLabel lbFilter = new JLabel("Lọc theo");
         lbFilter.setForeground(Color.WHITE);
         lbFilter.setFont(new Font("Tahoma", Font.BOLD, 15));
         lbFilter.setBounds(756, 6, 72, 29);
@@ -644,7 +644,7 @@ public class courseGUI extends JFrame {
             while (i < courseOnlineList.size()) {
                 OnlineCourse course = courseOnlineList.get(i);
                 modelOnline.addRow(new Object[6]);
-                modelOnline.setValueAt(model.getRowCount(), i, 0);
+                modelOnline.setValueAt(modelOnline.getRowCount(), i, 0);
                 modelOnline.setValueAt(course.getCourseID(), i, 1);
                 modelOnline.setValueAt(course.getTitle(), i, 2);
                 modelOnline.setValueAt(course.getCredits(), i, 3);
