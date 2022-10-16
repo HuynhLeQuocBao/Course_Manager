@@ -68,7 +68,7 @@ public class courseDAL {
         return courseOnlineList;
     }
 
-    public List<String> getAllCourse() {
+    public List<String> getCourseTitleandID() {
         List<String> courseList = new ArrayList<String>();
   
         if (dc.openConnection()) {

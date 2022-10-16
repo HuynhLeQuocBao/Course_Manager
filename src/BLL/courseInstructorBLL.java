@@ -8,7 +8,7 @@ public class courseInstructorBLL {
   courseInstructorDAL courseInstructorDAL = new courseInstructorDAL();
 
     public List<CourseInstructor> getAllCourseInstructor() {
-        return courseInstructorDAL.findAll();
+        return courseInstructorDAL.findAllCourseInstructor();
     }
 
    public String addCourseInstructor(CourseInstructor p) {

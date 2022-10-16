@@ -21,8 +21,8 @@ public class courseBLL {
         return courseDAL.findAllOnlineCourse();
     }
 
-    public List<String> getAllCourse(){
-        return courseDAL.getAllCourse();
+    public List<String> getCourseTitleandID(){
+        return courseDAL.getCourseTitleandID();
       }
 
     public String addCourse(String courseType, OnsiteCourse onsiteCourse, OnlineCourse onlineCourse) {

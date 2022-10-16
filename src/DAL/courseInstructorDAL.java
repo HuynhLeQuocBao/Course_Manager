@@ -7,25 +7,25 @@ import Base.CourseInstructor;
 public class courseInstructorDAL {
   databaseConnect dc = new databaseConnect();
 
-  public List<CourseInstructor> findAll() {
+  public List<CourseInstructor> findAllCourseInstructor() {
     List<CourseInstructor> courseInstructorList = new ArrayList<CourseInstructor>();
 
     if (dc.openConnection()) {
       try {
         // query
-        String sql = "select courseinstructor.PersonID, courseinstructor.CourseID,  person.FirstName ,person.LastName, course.Title"
+        String sql ="select courseinstructor.PersonID, courseinstructor.CourseID, person.FirstName ,person.LastName, course.Title "
             + "from "
             + "person,course, courseinstructor "
-            + "where person.PersonID= courseinstructor.PersonID "
+            + "where "
+            + "person.PersonID= courseinstructor.PersonID "
             + "and "
-            + "course.CourseID= courseinstructor.CourseID ";
+            + "course.CourseID= courseinstructor.CourseID";
         Statement statement = dc.connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-          CourseInstructor std = new CourseInstructor(
-              resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),  resultSet.getString("FirstName"), 
+          CourseInstructor std = new CourseInstructor(resultSet.getInt("PersonID"),resultSet.getInt("CourseID"),  resultSet.getString("FirstName"), 
               resultSet.getString("LastName"), resultSet.getString("Title")
           );
           courseInstructorList.add(std);

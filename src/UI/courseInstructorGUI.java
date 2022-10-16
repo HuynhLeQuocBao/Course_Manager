@@ -32,9 +32,9 @@ public class courseInstructorGUI extends JFrame {
   List<CourseInstructor> courseIntructorList = new ArrayList<CourseInstructor>();
   courseInstructorBLL instructorBBL = new courseInstructorBLL();
   TeacherBLL teaBLL = new TeacherBLL();
-  List<String> teacherName = teaBLL.getTeacherName() ;
+  List<String> teacherNameList = teaBLL.getTeacherName() ;
   courseBLL courseBLL = new courseBLL();
-  List<String> courseList = courseBLL.getAllCourse() ;
+  List<String> courseList = courseBLL.getCourseTitleandID() ;
   public JFrame f = new JFrame();
   private JPanel contentPane;
   private JTextField tfFind;
@@ -114,7 +114,7 @@ public class courseInstructorGUI extends JFrame {
     lbPersonID.setBounds(25, 46, 91, 28);
     panel.add(lbPersonID);
     
-     cbPerson = new JComboBox(teacherName.toArray());
+     cbPerson = new JComboBox(teacherNameList.toArray());
     cbPerson.setBounds(126, 48, 186, 28);
     panel.add(cbPerson);
     
@@ -325,10 +325,10 @@ private void displayCourseInstructorList() {
   while (i < courseIntructorList.size()) {
     CourseInstructor p = courseIntructorList.get(i);
     model.addRow(new Object[] {
+        
         model.getRowCount() + 1, p.getPersonID(), p.getCourseID(), p.getFirstName(), p.getLastName(), p.getTitle()
     });
     i++;
   }
-
 }
 }
